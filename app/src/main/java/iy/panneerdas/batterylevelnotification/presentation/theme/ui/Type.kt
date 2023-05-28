@@ -1,4 +1,4 @@
-package iy.panneerdas.batterylevelnotification.ui.theme
+package iy.panneerdas.batterylevelnotification.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

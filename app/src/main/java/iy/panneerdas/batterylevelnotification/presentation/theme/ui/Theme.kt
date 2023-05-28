@@ -1,4 +1,4 @@
-package iy.panneerdas.batterylevelnotification.ui.theme
+package iy.panneerdas.batterylevelnotification.presentation.theme
 
 import android.app.Activity
 import android.os.Build
