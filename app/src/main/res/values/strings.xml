@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Battery Level Notification</string>
+    <string name="battery_charging">Battery Charging</string>
+    <string name="battery_charging_description">Receive notifications when your phone battery is low and not being charged or charged above a threshold and still being charged. This may help you to preserve battery life.</string>
+    <string name="low_battery_notification">Your battery is low. Please plug in.</string>
+    <string name="battery_charging_threshold_reached_notification">Your battery charge has reached the high threshold and please unplug to prolong battery life.</string>
+    <string name="battery_status">Battery Status\n</string>
 </resources>
