@@ -1,31 +1,36 @@
 package iy.panneerdas.batterylevelnotification.platform
 
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
 
 interface BatteryMonitorWorkHandler {
-    operator fun invoke()
+    fun scheduleWork()
+    fun cancelWork()
 }
 
 class BatteryMonitorWorkHandlerImpl(private val workManager: WorkManager) :
     BatteryMonitorWorkHandler {
 
-    private val workName = "BATTERY_MONITOR"
-    private val periodicWork =
-        PeriodicWorkRequestBuilder<BatteryMonitorWorker>(
-            repeatInterval = 1,
-            repeatIntervalTimeUnit = TimeUnit.HOURS,
-            flexTimeInterval = 10,
-            flexTimeIntervalUnit = TimeUnit.MINUTES,
-        ).build()
+    private val uniqueWorkName = "BATTERY_MONITOR"
+    private val periodicWork = PeriodicWorkRequestBuilder<BatteryMonitorWorker>(
+        repeatInterval = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
+        repeatIntervalTimeUnit = TimeUnit.MILLISECONDS,
+        flexTimeInterval = PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+        flexTimeIntervalUnit = TimeUnit.MILLISECONDS,
+    ).build()
 
-    override fun invoke() {
+    override fun scheduleWork() {
         workManager.enqueueUniquePeriodicWork(
-            workName,
+            uniqueWorkName,
             ExistingPeriodicWorkPolicy.KEEP,
             periodicWork
         )
+    }
+
+    override fun cancelWork() {
+        workManager.cancelUniqueWork(uniqueWorkName)
     }
 }

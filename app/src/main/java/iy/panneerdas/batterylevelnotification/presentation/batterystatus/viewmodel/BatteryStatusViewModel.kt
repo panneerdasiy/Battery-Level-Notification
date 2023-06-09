@@ -5,14 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCase
 import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManager
 import kotlinx.coroutines.launch
 
 class BatteryStatusViewModel(
     batteryStatusUseCase: BatteryStatusUseCase,
+    private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
 ) : ViewModel() {
     lateinit var permissionManager: NotificationPermissionManager
+
     val batteryStatus: BatteryStatus? = batteryStatusUseCase()
 
     private val _alertToggle = MutableLiveData(false)
@@ -39,13 +42,14 @@ class BatteryStatusViewModel(
         }
 
         _alertToggle.value = hasPermission
-    }
 
-    private fun disableAlert() {
-        TODO("Not yet implemented")
     }
 
     private fun enableAlert() {
-        TODO("Not yet implemented")
+        batteryMonitorWorkerUseCase.scheduleWork()
+    }
+
+    private fun disableAlert() {
+        batteryMonitorWorkerUseCase.cancelWork()
     }
 }

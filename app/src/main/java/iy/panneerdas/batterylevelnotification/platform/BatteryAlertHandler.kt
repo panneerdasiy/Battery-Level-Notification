@@ -43,6 +43,7 @@ class BatteryAlertHandlerImpl(private val context: Context) : BatteryAlertHandle
     private fun createNotification(content: String): Notification {
         val title = context.getString(R.string.battery_status)
         return NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(title)
             .setContentText(content)
             .setPriority(NotificationManagerCompat.IMPORTANCE_HIGH)
