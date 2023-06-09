@@ -1,7 +1,7 @@
 package iy.panneerdas.batterylevelnotification.domain.usecase
 
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-import iy.panneerdas.batterylevelnotification.platform.BatteryStatusProvider
+import iy.panneerdas.batterylevelnotification.domain.platform.BatteryStatusProvider
 
 interface BatteryStatusUseCase {
     operator fun invoke(): BatteryStatus?

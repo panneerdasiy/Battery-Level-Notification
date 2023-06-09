@@ -21,10 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.work.WorkManager
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
+import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCaseImpl
-import iy.panneerdas.batterylevelnotification.platform.BatteryMonitorWorkHandlerImpl
-import iy.panneerdas.batterylevelnotification.platform.BatteryStatusProviderImpl
+import iy.panneerdas.batterylevelnotification.platform.battery.BatteryStatusProviderImpl
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModelFactory
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme

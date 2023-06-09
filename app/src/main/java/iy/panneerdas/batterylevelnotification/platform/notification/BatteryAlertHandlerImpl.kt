@@ -1,4 +1,4 @@
-package iy.panneerdas.batterylevelnotification.platform
+package iy.panneerdas.batterylevelnotification.platform.notification
 
 import android.annotation.SuppressLint
 import android.app.Notification
@@ -9,13 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import iy.panneerdas.batterylevelnotification.R
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-
-interface BatteryAlertHandler {
-
-    fun startCharging(status: BatteryStatus)
-
-    fun stopCharging(status: BatteryStatus)
-}
+import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertHandler
 
 class BatteryAlertHandlerImpl(private val context: Context) : BatteryAlertHandler {
     private val channelId = "battery_alert_channel"
