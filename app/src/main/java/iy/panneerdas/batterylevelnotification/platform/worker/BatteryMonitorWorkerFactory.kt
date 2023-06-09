@@ -1,4 +1,4 @@
-package iy.panneerdas.batterylevelnotification.platform
+package iy.panneerdas.batterylevelnotification.platform.worker
 
 import android.content.Context
 import androidx.work.ListenableWorker

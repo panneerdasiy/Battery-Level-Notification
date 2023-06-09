@@ -1,4 +1,4 @@
-package iy.panneerdas.batterylevelnotification.platform
+package iy.panneerdas.batterylevelnotification.platform.battery
 
 import android.content.Context
 import android.content.Intent
@@ -6,10 +6,7 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-
-interface BatteryStatusProvider {
-    operator fun invoke(): BatteryStatus?
-}
+import iy.panneerdas.batterylevelnotification.domain.platform.BatteryStatusProvider
 
 class BatteryStatusProviderImpl(private val context: Context) : BatteryStatusProvider {
 

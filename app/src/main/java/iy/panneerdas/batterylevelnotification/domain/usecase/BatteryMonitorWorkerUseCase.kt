@@ -1,6 +1,6 @@
 package iy.panneerdas.batterylevelnotification.domain.usecase
 
-import iy.panneerdas.batterylevelnotification.platform.BatteryMonitorWorkHandler
+import iy.panneerdas.batterylevelnotification.domain.platform.BatteryMonitorWorkHandler
 
 interface BatteryMonitorWorkerUseCase {
     fun scheduleWork()

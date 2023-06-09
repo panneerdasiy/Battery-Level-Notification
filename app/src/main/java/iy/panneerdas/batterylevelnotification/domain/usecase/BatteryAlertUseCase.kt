@@ -2,7 +2,7 @@ package iy.panneerdas.batterylevelnotification.domain.usecase
 
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-import iy.panneerdas.batterylevelnotification.platform.BatteryAlertHandler
+import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertHandler
 
 interface BatteryAlertUseCase {
 

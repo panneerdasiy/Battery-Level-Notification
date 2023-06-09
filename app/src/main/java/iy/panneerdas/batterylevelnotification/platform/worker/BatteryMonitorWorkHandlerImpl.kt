@@ -1,15 +1,11 @@
-package iy.panneerdas.batterylevelnotification.platform
+package iy.panneerdas.batterylevelnotification.platform.worker
 
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import iy.panneerdas.batterylevelnotification.domain.platform.BatteryMonitorWorkHandler
 import java.util.concurrent.TimeUnit
-
-interface BatteryMonitorWorkHandler {
-    fun scheduleWork()
-    fun cancelWork()
-}
 
 class BatteryMonitorWorkHandlerImpl(private val workManager: WorkManager) :
     BatteryMonitorWorkHandler {
