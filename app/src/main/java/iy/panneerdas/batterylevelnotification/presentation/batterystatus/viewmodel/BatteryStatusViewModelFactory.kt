@@ -1,12 +1,14 @@
 package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCaseImpl
-import iy.panneerdas.batterylevelnotification.platform.BatteryStatusProviderImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCase
 
-class BatteryStatusViewModelFactory(private val context: Context) :
+class BatteryStatusViewModelFactory(
+    private val batteryStatusUseCase: BatteryStatusUseCase,
+    private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
+) :
     ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -14,8 +16,9 @@ class BatteryStatusViewModelFactory(private val context: Context) :
         if (!modelClass.isAssignableFrom(BatteryStatusViewModel::class.java))
             throw IllegalArgumentException("Unknown view model class")
 
-        val batteryStatusProvider = BatteryStatusProviderImpl(context)
-        val batteryStatusUseCase = BatteryStatusUseCaseImpl(batteryStatusProvider)
-        return BatteryStatusViewModel(batteryStatusUseCase) as T
+        return BatteryStatusViewModel(
+            batteryStatusUseCase = batteryStatusUseCase,
+            batteryMonitorWorkerUseCase = batteryMonitorWorkerUseCase,
+        ) as T
     }
 }

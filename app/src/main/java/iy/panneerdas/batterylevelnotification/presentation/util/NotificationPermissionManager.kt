@@ -1,12 +1,13 @@
 package iy.panneerdas.batterylevelnotification.presentation.util
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -16,26 +17,31 @@ interface NotificationPermissionManager {
 
 class NotificationPermissionManagerImpl(private val activity: ComponentActivity) :
     NotificationPermissionManager {
-    private val permission = Manifest.permission.POST_NOTIFICATIONS
+    @SuppressLint("InlinedApi")
+    private val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private lateinit var requestPermissionContinuation: Continuation<Boolean>
+    private val permissionRequestLauncher = activity.registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) {
+        requestPermissionContinuation.resume(it)
+    }
+
     override suspend fun requestPermission(): Boolean {
         if (hasPermission()) return true
 
         return suspendCoroutine { continuation ->
-            activity.registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted ->
-                continuation.resume(isGranted)
-            }.launch(permission)
+            this.requestPermissionContinuation = continuation
+            permissionRequestLauncher.launch(notificationPermission)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun hasPermission(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return true
+
         return ContextCompat.checkSelfPermission(
             activity,
-            permission
+            notificationPermission
         ) == PermissionChecker.PERMISSION_GRANTED
     }
 }
