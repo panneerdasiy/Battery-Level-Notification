@@ -1,10 +1,9 @@
 package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCase
 import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManager
@@ -13,19 +12,16 @@ import kotlinx.coroutines.launch
 class BatteryStatusViewModel(
     batteryStatusUseCase: BatteryStatusUseCase,
     private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
+    private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,
 ) : ViewModel() {
     lateinit var permissionManager: NotificationPermissionManager
 
     val batteryStatus: BatteryStatus? = batteryStatusUseCase()
 
-    private val _alertToggle = MutableLiveData(false)
-    val alertToggle: LiveData<Boolean>
-        get() = _alertToggle
+    val alertToggleFlow = batteryAlertSettingUseCase.getAlertEnableStatus()
 
     fun onAlertToggleChange(isChecked: Boolean) {
         viewModelScope.launch {
-            _alertToggle.value = isChecked
-
             if (isChecked) {
                 onAlertToggleEnable()
                 return@launch
@@ -37,19 +33,20 @@ class BatteryStatusViewModel(
 
     private suspend fun onAlertToggleEnable() {
         val hasPermission = permissionManager.requestPermission()
-        if (hasPermission) {
-            enableAlert()
-        }
-
-        _alertToggle.value = hasPermission
-
+        if (hasPermission) enableAlert()
     }
 
     private fun enableAlert() {
-        batteryMonitorWorkerUseCase.scheduleWork()
+        viewModelScope.launch {
+            batteryMonitorWorkerUseCase.scheduleWork()
+            batteryAlertSettingUseCase.setAlertEnableStatus(enable = true)
+        }
     }
 
     private fun disableAlert() {
-        batteryMonitorWorkerUseCase.cancelWork()
+        viewModelScope.launch {
+            batteryMonitorWorkerUseCase.cancelWork()
+            batteryAlertSettingUseCase.setAlertEnableStatus(enable = false)
+        }
     }
 }
