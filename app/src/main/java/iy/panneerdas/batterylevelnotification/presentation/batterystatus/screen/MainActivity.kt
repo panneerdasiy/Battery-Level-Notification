@@ -15,16 +15,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.work.WorkManager
+import iy.panneerdas.batterylevelnotification.data.repository.BatteryAlertSettingRepositoryImpl
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertSettingUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.battery.BatteryStatusProviderImpl
+import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModelFactory
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme
@@ -40,9 +42,13 @@ class MainActivity : ComponentActivity() {
         val handler = BatteryMonitorWorkHandlerImpl(workManager = workManager)
         val batteryMonitorWorkerUseCase = BatteryMonitorWorkerUseCaseImpl(handler = handler)
 
+        val settingRepository = BatteryAlertSettingRepositoryImpl(this@MainActivity)
+        val batteryAlertSettingUseCase = BatteryAlertSettingUseCaseImpl(settingRepository)
+
         BatteryStatusViewModelFactory(
             batteryStatusUseCase = batteryStatusUseCase,
             batteryMonitorWorkerUseCase = batteryMonitorWorkerUseCase,
+            batteryAlertSettingUseCase = batteryAlertSettingUseCase,
         )
     }
 
@@ -72,7 +78,7 @@ class MainActivity : ComponentActivity() {
                         Text("Smart Charging Remainders")
                         Box(Modifier.width(10.dp))
                         Switch(
-                            checked = viewModel.alertToggle.observeAsState(false).value,
+                            checked = viewModel.alertToggleFlow.collectAsState(false).value,
                             onCheckedChange = viewModel::onAlertToggleChange,
                         )
                     }
