@@ -2,14 +2,16 @@ package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertSettingUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCase
 
 class BatteryStatusViewModelFactory(
     private val batteryStatusUseCase: BatteryStatusUseCase,
     private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
     private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,
+    private val workerLogUseCase: WorkerLogUseCase
 ) :
     ViewModelProvider.NewInstanceFactory() {
 
@@ -22,6 +24,7 @@ class BatteryStatusViewModelFactory(
             batteryStatusUseCase = batteryStatusUseCase,
             batteryMonitorWorkerUseCase = batteryMonitorWorkerUseCase,
             batteryAlertSettingUseCase = batteryAlertSettingUseCase,
+            workerLogUseCase = workerLogUseCase
         ) as T
     }
 }

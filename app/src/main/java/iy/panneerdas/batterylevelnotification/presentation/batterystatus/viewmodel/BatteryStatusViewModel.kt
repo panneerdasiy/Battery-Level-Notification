@@ -3,22 +3,40 @@ package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertSettingUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCase
+import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManager
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.sql.Date
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class BatteryStatusViewModel(
     batteryStatusUseCase: BatteryStatusUseCase,
     private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
     private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,
+    workerLogUseCase: WorkerLogUseCase,
 ) : ViewModel() {
     lateinit var permissionManager: NotificationPermissionManager
 
     val batteryStatus: BatteryStatus? = batteryStatusUseCase()
 
     val alertToggleFlow = batteryAlertSettingUseCase.getAlertEnableStatus()
+
+    val logsFlow = workerLogUseCase.getAll()
+        .map { logs ->
+            logs.map { log ->
+                val formatter = SimpleDateFormat("dd/MM/yy hh:mm a", Locale.getDefault())
+                WorkerLog(
+                    id = log.id,
+                    dateTime = formatter.format(Date(log.timeMillis))
+                )
+            }
+        }
 
     fun onAlertToggleChange(isChecked: Boolean) {
         viewModelScope.launch {

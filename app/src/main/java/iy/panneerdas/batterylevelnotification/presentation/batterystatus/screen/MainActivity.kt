@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -21,12 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.work.WorkManager
 import iy.panneerdas.batterylevelnotification.data.repository.BatteryAlertSettingRepositoryImpl
+import iy.panneerdas.batterylevelnotification.data.repository.workerlog.AppDatabase
+import iy.panneerdas.batterylevelnotification.data.repository.workerlog.WorkerLogRepositoryImpl
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertSettingUseCaseImpl
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCaseImpl
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.battery.BatteryStatusProviderImpl
 import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
+import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModelFactory
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme
@@ -45,10 +52,16 @@ class MainActivity : ComponentActivity() {
         val settingRepository = BatteryAlertSettingRepositoryImpl(this@MainActivity)
         val batteryAlertSettingUseCase = BatteryAlertSettingUseCaseImpl(settingRepository)
 
+        val appDatabase = AppDatabase.getInstance(this@MainActivity)
+        val workerLogDao = appDatabase.workerLogDao()
+        val workerLogRepo = WorkerLogRepositoryImpl(workerLogDao)
+        val workerLogUseCase = WorkerLogUseCaseImpl(workerLogRepo)
+
         BatteryStatusViewModelFactory(
             batteryStatusUseCase = batteryStatusUseCase,
             batteryMonitorWorkerUseCase = batteryMonitorWorkerUseCase,
             batteryAlertSettingUseCase = batteryAlertSettingUseCase,
+            workerLogUseCase = workerLogUseCase,
         )
     }
 
@@ -57,11 +70,15 @@ class MainActivity : ComponentActivity() {
         viewModel.permissionManager = NotificationPermissionManagerImpl(this)
 
         val batteryStatus = viewModel.batteryStatus
-        setContent { BatteryStatusScreen(batteryStatus) }
+        setContent {
+            val workerLogs = viewModel.logsFlow.collectAsState(initial = emptyList()).value
+            BatteryStatusScreen(batteryStatus = batteryStatus, workerLogs = workerLogs)
+        }
     }
 
     @Composable
-    fun BatteryStatusScreen(batteryStatus: BatteryStatus?) {
+    fun BatteryStatusScreen(batteryStatus: BatteryStatus?, workerLogs: List<WorkerLog>) {
+
         BatteryLevelNotificationTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -81,6 +98,12 @@ class MainActivity : ComponentActivity() {
                             checked = viewModel.alertToggleFlow.collectAsState(false).value,
                             onCheckedChange = viewModel::onAlertToggleChange,
                         )
+                    }
+                    Box(Modifier.height(16.dp))
+                    LazyColumn {
+                        items(workerLogs) { log ->
+                            Text("${log.id}: ${log.dateTime}")
+                        }
                     }
                 }
             }
