@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCase
 
 class BatteryMonitorWorkerFactory(
     private val batteryStatusUseCase: BatteryStatusUseCase,
-    private val batteryAlertUseCase: BatteryAlertUseCase
+    private val batteryAlertUseCase: BatteryAlertUseCase,
+    private val workerLogUseCase: WorkerLogUseCase
 ) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
@@ -22,6 +24,7 @@ class BatteryMonitorWorkerFactory(
                 workerParams = workerParameters,
                 batteryStatusUseCase = batteryStatusUseCase,
                 batteryAlertUseCase = batteryAlertUseCase,
+                workerLogUseCase = workerLogUseCase,
             )
 
             else -> throw IllegalArgumentException("Unsupported worker class: $workerClassName")
