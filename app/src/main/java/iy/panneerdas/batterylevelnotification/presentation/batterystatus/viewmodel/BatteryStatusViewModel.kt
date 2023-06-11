@@ -2,10 +2,9 @@ package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCase
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManager
@@ -16,14 +15,14 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class BatteryStatusViewModel(
-    batteryStatusUseCase: BatteryStatusUseCase,
     private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
     private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,
+    batteryChangeStatusUseCase: BatteryChangeStatusUseCase,
     workerLogUseCase: WorkerLogUseCase,
 ) : ViewModel() {
     lateinit var permissionManager: NotificationPermissionManager
 
-    val batteryStatus: BatteryStatus? = batteryStatusUseCase()
+    val batteryStatus = batteryChangeStatusUseCase()//TODO map to presenter model
 
     val alertToggleFlow = batteryAlertSettingUseCase.getAlertEnableStatus()
 
