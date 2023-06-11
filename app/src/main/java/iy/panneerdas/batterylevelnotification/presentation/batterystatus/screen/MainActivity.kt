@@ -28,10 +28,10 @@ import iy.panneerdas.batterylevelnotification.data.repository.workerlog.AppDatab
 import iy.panneerdas.batterylevelnotification.data.repository.workerlog.WorkerLogRepositoryImpl
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChangeStatusUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCaseImpl
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCaseImpl
-import iy.panneerdas.batterylevelnotification.platform.battery.BatteryStatusProviderImpl
+import iy.panneerdas.batterylevelnotification.platform.battery.BatteryChangeStatusProviderImpl
 import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
@@ -42,9 +42,6 @@ import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPerm
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<BatteryStatusViewModel> {
-        val batteryStatusProvider = BatteryStatusProviderImpl(this@MainActivity)
-        val batteryStatusUseCase = BatteryStatusUseCaseImpl(batteryStatusProvider)
-
         val workManager = WorkManager.getInstance(this@MainActivity)
         val handler = BatteryMonitorWorkHandlerImpl(workManager = workManager)
         val batteryMonitorWorkerUseCase = BatteryMonitorWorkerUseCaseImpl(handler = handler)
@@ -57,21 +54,31 @@ class MainActivity : ComponentActivity() {
         val workerLogRepo = WorkerLogRepositoryImpl(workerLogDao)
         val workerLogUseCase = WorkerLogUseCaseImpl(workerLogRepo)
 
+        val provider =
+            BatteryChangeStatusProviderImpl(this)//TODO make sure on activity change view model gets latest ref
+        val batteryChangeStatusUseCase = BatteryChangeStatusUseCaseImpl(provider)
+
         BatteryStatusViewModelFactory(
-            batteryStatusUseCase = batteryStatusUseCase,
             batteryMonitorWorkerUseCase = batteryMonitorWorkerUseCase,
             batteryAlertSettingUseCase = batteryAlertSettingUseCase,
+            batteryChangeStatusUseCase = batteryChangeStatusUseCase,
             workerLogUseCase = workerLogUseCase,
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.permissionManager = NotificationPermissionManagerImpl(this)
+        viewModel.permissionManager =
+            NotificationPermissionManagerImpl(this)//TODO add better logic here
 
-        val batteryStatus = viewModel.batteryStatus
         setContent {
-            val workerLogs = viewModel.logsFlow.collectAsState(initial = emptyList()).value
+            val workerLogs = viewModel.logsFlow.collectAsState(
+                initial = emptyList()
+            ).value.reversed()
+            val batteryStatus = viewModel.batteryStatus.collectAsState(
+                initial = BatteryStatus()
+            ).value
+
             BatteryStatusScreen(batteryStatus = batteryStatus, workerLogs = workerLogs)
         }
     }
