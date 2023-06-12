@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -45,7 +44,6 @@ class BatteryChangeStatusProviderImpl(private val context: ComponentActivity) : 
             val chargingStatus = getChargingStatus(intent)
             val batteryPercent = getBatteryPercent(intent)
             val status = BatteryStatus(percent = batteryPercent, chargingStatus = chargingStatus)
-            Log.d(BatteryChangeStatusProviderImpl::class.simpleName, "onReceive: $status")
 
             _statusFlow.emit(status)
         }
