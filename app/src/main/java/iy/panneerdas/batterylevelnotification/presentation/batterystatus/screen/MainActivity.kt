@@ -31,6 +31,7 @@ import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAler
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChangeStatusUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCaseImpl
+import iy.panneerdas.batterylevelnotification.platform.LifeCycleCoroutineScopeProviderImpl
 import iy.panneerdas.batterylevelnotification.platform.battery.BatteryChangeStatusProviderImpl
 import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
@@ -58,6 +59,7 @@ class MainActivity : ComponentActivity() {
         val batteryChangeStatusUseCase = BatteryChangeStatusUseCaseImpl(provider)
 
         BatteryStatusViewModel(
+            lifecycleCoroutineProvider = LifeCycleCoroutineScopeProviderImpl(lifecycle),
             batteryMonitorWorkerUseCase = batteryMonitorWorkerUseCase,
             batteryAlertSettingUseCase = batteryAlertSettingUseCase,
             batteryChangeStatusUseCase = batteryChangeStatusUseCase,
