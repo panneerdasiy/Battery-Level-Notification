@@ -22,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.coroutineScope
 import androidx.work.WorkManager
 import iy.panneerdas.batterylevelnotification.data.repository.BatteryAlertSettingRepositoryImpl
 import iy.panneerdas.batterylevelnotification.data.repository.workerlog.AppDatabase
@@ -38,6 +39,7 @@ import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmod
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModelFactory
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme
 import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManagerImpl
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -68,8 +70,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.permissionManager =
-            NotificationPermissionManagerImpl(this)//TODO add better logic here
+        initPermissionManager()
 
         setContent {
             val workerLogs = viewModel.logsFlow.collectAsState(
@@ -78,13 +79,35 @@ class MainActivity : ComponentActivity() {
             val batteryStatus = viewModel.batteryStatus.collectAsState(
                 initial = BatteryStatus()
             ).value
+            val isAlertEnabled = viewModel.alertToggleFlow.collectAsState(false).value
 
-            BatteryStatusScreen(batteryStatus = batteryStatus, workerLogs = workerLogs)
+            BatteryStatusScreen(
+                batteryStatus = batteryStatus,
+                workerLogs = workerLogs,
+                isAlertEnabled = isAlertEnabled
+            )
+        }
+    }
+
+    private fun initPermissionManager() {
+        val permissionManager = NotificationPermissionManagerImpl(
+            this@MainActivity
+        )
+        lifecycle.coroutineScope.launch {
+            viewModel.requestPermissionState.collect {
+                viewModel.onPermissionResult(
+                    granted = permissionManager.requestPermission()
+                )
+            }
         }
     }
 
     @Composable
-    fun BatteryStatusScreen(batteryStatus: BatteryStatus?, workerLogs: List<WorkerLog>) {
+    fun BatteryStatusScreen(
+        batteryStatus: BatteryStatus?,
+        workerLogs: List<WorkerLog>,
+        isAlertEnabled: Boolean
+    ) {
 
         BatteryLevelNotificationTheme {
             Surface(
@@ -102,7 +125,7 @@ class MainActivity : ComponentActivity() {
                         Text("Smart Charging Remainders")
                         Box(Modifier.width(10.dp))
                         Switch(
-                            checked = viewModel.alertToggleFlow.collectAsState(false).value,
+                            checked = isAlertEnabled,
                             onCheckedChange = viewModel::onAlertToggleChange,
                         )
                     }
