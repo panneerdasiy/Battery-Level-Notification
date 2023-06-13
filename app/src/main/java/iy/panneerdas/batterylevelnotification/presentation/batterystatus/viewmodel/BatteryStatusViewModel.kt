@@ -7,7 +7,7 @@ import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChan
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCase
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.sql.Date
@@ -21,11 +21,11 @@ class BatteryStatusViewModel(
     workerLogUseCase: WorkerLogUseCase,
 ) : ViewModel() {
 
-    val requestPermissionState = MutableStateFlow(Unit)
+    val requestPermissionState = MutableSharedFlow<Unit>()
 
     val batteryStatus = batteryChangeStatusUseCase()//TODO map to presenter model
 
-    val alertToggleFlow = batteryAlertSettingUseCase.getAlertEnableStatus()
+    val isAlertEnabledFlow = batteryAlertSettingUseCase.getAlertEnableStatus()
 
     val logsFlow = workerLogUseCase.getAll()
         .map { logs ->
@@ -39,12 +39,16 @@ class BatteryStatusViewModel(
         }
 
     fun onAlertToggleChange(isChecked: Boolean) {
-        if (isChecked) {
-            onAlertToggleEnable()
-            return
-        }
+        viewModelScope.launch {
+            batteryAlertSettingUseCase.setAlertEnableStatus(enable = isChecked)
 
-        disableAlert()
+            if (isChecked) {
+                onAlertToggleEnable()
+                return@launch
+            }
+
+            disableAlert()
+        }
     }
 
     private fun onAlertToggleEnable() {
@@ -54,7 +58,12 @@ class BatteryStatusViewModel(
     }
 
     fun onPermissionResult(granted: Boolean) {
-        if (granted) enableAlert()
+        if (granted) {
+            enableAlert()
+            return
+        }
+
+        disableAlert()
     }
 
     private fun enableAlert() {

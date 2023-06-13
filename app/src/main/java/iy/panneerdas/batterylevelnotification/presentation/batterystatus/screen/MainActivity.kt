@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
             val batteryStatus = viewModel.batteryStatus.collectAsState(
                 initial = BatteryStatus()
             ).value
-            val isAlertEnabled = viewModel.alertToggleFlow.collectAsState(false).value
+            val isAlertEnabled = viewModel.isAlertEnabledFlow.collectAsState(false).value
 
             BatteryStatusScreen(
                 batteryStatus = batteryStatus,
