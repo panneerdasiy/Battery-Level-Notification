@@ -1,12 +1,15 @@
 package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCase
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -19,11 +22,12 @@ class BatteryStatusViewModel(
     private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,
     batteryChangeStatusUseCase: BatteryChangeStatusUseCase,
     workerLogUseCase: WorkerLogUseCase,
-) : ViewModel() {
+    private val viewModelScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+) : DefaultLifecycleObserver {
 
     val requestPermissionState = MutableSharedFlow<Unit>()
 
-    val batteryStatus = batteryChangeStatusUseCase()//TODO map to presenter model
+    val batteryStatus = batteryChangeStatusUseCase()
 
     val isAlertEnabledFlow = batteryAlertSettingUseCase.getAlertEnableStatus()
 
@@ -78,5 +82,10 @@ class BatteryStatusViewModel(
             batteryMonitorWorkerUseCase.cancelWork()
             batteryAlertSettingUseCase.setAlertEnableStatus(enable = false)
         }
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        viewModelScope.cancel()
     }
 }

@@ -3,7 +3,6 @@ package iy.panneerdas.batterylevelnotification.presentation.batterystatus.screen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,14 +35,13 @@ import iy.panneerdas.batterylevelnotification.platform.battery.BatteryChangeStat
 import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
-import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModelFactory
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme
 import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManagerImpl
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<BatteryStatusViewModel> {
+    private val viewModel by lazy {
         val workManager = WorkManager.getInstance(this@MainActivity)
         val handler = BatteryMonitorWorkHandlerImpl(workManager = workManager)
         val batteryMonitorWorkerUseCase = BatteryMonitorWorkerUseCaseImpl(handler = handler)
@@ -56,15 +54,14 @@ class MainActivity : ComponentActivity() {
         val workerLogRepo = WorkerLogRepositoryImpl(workerLogDao)
         val workerLogUseCase = WorkerLogUseCaseImpl(workerLogRepo)
 
-        val provider =
-            BatteryChangeStatusProviderImpl(this)//TODO make sure on activity change view model gets latest ref
+        val provider = BatteryChangeStatusProviderImpl(this)
         val batteryChangeStatusUseCase = BatteryChangeStatusUseCaseImpl(provider)
 
-        BatteryStatusViewModelFactory(
+        BatteryStatusViewModel(
             batteryMonitorWorkerUseCase = batteryMonitorWorkerUseCase,
             batteryAlertSettingUseCase = batteryAlertSettingUseCase,
             batteryChangeStatusUseCase = batteryChangeStatusUseCase,
-            workerLogUseCase = workerLogUseCase,
+            workerLogUseCase = workerLogUseCase
         )
     }
 

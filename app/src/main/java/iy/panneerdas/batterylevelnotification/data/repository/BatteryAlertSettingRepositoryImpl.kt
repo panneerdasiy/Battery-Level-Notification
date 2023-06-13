@@ -27,6 +27,6 @@ class BatteryAlertSettingRepositoryImpl(private val context: Context) :
     override fun getAlertEnableStatus(): Flow<Boolean> {
         return context.dataStore.data.map { setting ->
             setting[alertEnableKey] ?: false
-        }//TODO check why it is always true
+        }
     }
 }
