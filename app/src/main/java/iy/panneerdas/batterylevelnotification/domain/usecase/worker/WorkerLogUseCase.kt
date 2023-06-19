@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface WorkerLogUseCase {
     fun getAll(): Flow<List<WorkerLog>>
-    fun insert()
+    fun insert(log: WorkerLog)
 }
 
 class WorkerLogUseCaseImpl(private val repo: WorkerLogRepository) : WorkerLogUseCase {
     override fun getAll(): Flow<List<WorkerLog>> = repo.getAll()
 
-    override fun insert() = repo.insert()
+    override fun insert(log: WorkerLog) = repo.insert(log = log)
 }

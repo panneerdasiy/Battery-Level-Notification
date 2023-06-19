@@ -129,9 +129,12 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     Box(Modifier.height(16.dp))
-                    LazyColumn {
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(workerLogs) { log ->
-                            Text("${log.id}: ${log.dateTime}")
+                            Column {
+                                Text("${log.id}: ${log.dateTime}")
+                                Text("Battery Status: ${log.batteryPercent}")
+                            }
                         }
                     }
                 }

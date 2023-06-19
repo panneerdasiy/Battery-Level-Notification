@@ -32,7 +32,8 @@ class BatteryStatusViewModel(
                 val formatter = SimpleDateFormat("dd/MM/yy hh:mm a", Locale.getDefault())
                 WorkerLog(
                     id = log.id,
-                    dateTime = formatter.format(Date(log.timeMillis))
+                    dateTime = formatter.format(Date(log.timeMillis)),
+                    batteryPercent = log.batteryPercent
                 )
             }
         }
