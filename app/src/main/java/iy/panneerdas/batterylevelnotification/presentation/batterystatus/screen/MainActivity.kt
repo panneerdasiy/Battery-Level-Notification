@@ -22,50 +22,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
-import androidx.work.WorkManager
-import iy.panneerdas.batterylevelnotification.data.repository.BatteryAlertSettingRepositoryImpl
-import iy.panneerdas.batterylevelnotification.data.repository.workerlog.AppDatabase
-import iy.panneerdas.batterylevelnotification.data.repository.workerlog.WorkerLogRepositoryImpl
+import dagger.hilt.android.AndroidEntryPoint
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCaseImpl
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChangeStatusUseCaseImpl
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCaseImpl
-import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCaseImpl
-import iy.panneerdas.batterylevelnotification.platform.LifeCycleCoroutineScopeProviderImpl
-import iy.panneerdas.batterylevelnotification.platform.battery.BatteryChangeStatusProviderImpl
-import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme
-import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManagerImpl
+import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManager
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var permissionManager: NotificationPermissionManager
 
-    private val viewModel by lazy {
-        val workManager = WorkManager.getInstance(this@MainActivity)
-        val handler = BatteryMonitorWorkHandlerImpl(workManager = workManager)
-        val batteryMonitorWorkerUseCase = BatteryMonitorWorkerUseCaseImpl(handler = handler)
-
-        val settingRepository = BatteryAlertSettingRepositoryImpl(this@MainActivity)
-        val batteryAlertSettingUseCase = BatteryAlertSettingUseCaseImpl(settingRepository)
-
-        val appDatabase = AppDatabase.getInstance(this@MainActivity)
-        val workerLogDao = appDatabase.workerLogDao()
-        val workerLogRepo = WorkerLogRepositoryImpl(workerLogDao)
-        val workerLogUseCase = WorkerLogUseCaseImpl(workerLogRepo)
-
-        val provider = BatteryChangeStatusProviderImpl(this)
-        val batteryChangeStatusUseCase = BatteryChangeStatusUseCaseImpl(provider)
-
-        BatteryStatusViewModel(
-            lifecycleCoroutineProvider = LifeCycleCoroutineScopeProviderImpl(lifecycle),
-            batteryMonitorWorkerUseCase = batteryMonitorWorkerUseCase,
-            batteryAlertSettingUseCase = batteryAlertSettingUseCase,
-            batteryChangeStatusUseCase = batteryChangeStatusUseCase,
-            workerLogUseCase = workerLogUseCase
-        )
-    }
+    @Inject
+    lateinit var viewModel: BatteryStatusViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,9 +61,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initPermissionManager() {
-        val permissionManager = NotificationPermissionManagerImpl(
-            this@MainActivity
-        )
         lifecycle.coroutineScope.launch {
             viewModel.requestPermissionState.collect {
                 viewModel.onPermissionResult(

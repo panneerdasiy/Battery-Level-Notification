@@ -16,9 +16,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BatteryChangeStatusProviderImpl(private val context: ComponentActivity) : BroadcastReceiver(),
-    BatteryChangeStatusProvider, DefaultLifecycleObserver {
+class BatteryChangeStatusProviderImpl @Inject constructor(
+    private val context: ComponentActivity
+) : BroadcastReceiver(), BatteryChangeStatusProvider, DefaultLifecycleObserver {
     private val _statusFlow = MutableSharedFlow<BatteryStatus>(replay = 1)
 
     init {

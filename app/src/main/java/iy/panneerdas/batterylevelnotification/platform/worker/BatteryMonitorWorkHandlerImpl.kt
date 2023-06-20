@@ -6,8 +6,9 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryMonitorWorkHandler
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class BatteryMonitorWorkHandlerImpl(private val workManager: WorkManager) :
+class BatteryMonitorWorkHandlerImpl @Inject constructor(private val workManager: WorkManager) :
     BatteryMonitorWorkHandler {
 
     private val uniqueWorkName = "BATTERY_MONITOR"

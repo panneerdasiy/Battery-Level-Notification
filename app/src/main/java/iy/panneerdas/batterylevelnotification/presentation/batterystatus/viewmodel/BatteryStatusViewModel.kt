@@ -12,8 +12,9 @@ import kotlinx.coroutines.launch
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.Locale
+import javax.inject.Inject
 
-class BatteryStatusViewModel(
+class BatteryStatusViewModel @Inject constructor(
     lifecycleCoroutineProvider: LifeCycleCoroutineScopeProvider,
     private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
     private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,

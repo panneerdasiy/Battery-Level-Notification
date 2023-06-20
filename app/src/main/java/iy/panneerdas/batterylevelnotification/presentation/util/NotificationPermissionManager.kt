@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import javax.inject.Inject
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -15,8 +16,9 @@ interface NotificationPermissionManager {
     suspend fun requestPermission(): Boolean
 }
 
-class NotificationPermissionManagerImpl(private val activity: ComponentActivity) :
-    NotificationPermissionManager {
+class NotificationPermissionManagerImpl @Inject constructor(
+    private val activity: ComponentActivity
+) : NotificationPermissionManager {
     @SuppressLint("InlinedApi")
     private val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
 
