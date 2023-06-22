@@ -7,7 +7,7 @@ import iy.panneerdas.batterylevelnotification.data.repository.workerlog.AppDatab
 import iy.panneerdas.batterylevelnotification.data.repository.workerlog.WorkerLogRepositoryImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCaseImpl
-import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.battery.BatteryStatusProviderImpl
 import iy.panneerdas.batterylevelnotification.platform.notification.BatteryAlertHandlerImpl
 import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkerFactory
@@ -26,13 +26,13 @@ class MyApplication : Application(), Configuration.Provider {
         val appDatabase = AppDatabase.getInstance(this)
         val workerLogDao = appDatabase.workerLogDao()
         val workerLogRepo = WorkerLogRepositoryImpl(workerLogDao)
-        val workerLogUseCase = WorkerLogUseCaseImpl(workerLogRepo)
+        val workerLogUseCase = InsertWorkerLogUseCaseImpl(workerLogRepo)
 
         return Configuration.Builder().setWorkerFactory(
             BatteryMonitorWorkerFactory(
                 batteryStatusUseCase = batteryStatusUseCase,
                 batteryAlertUseCase = batteryAlertUseCase,
-                workerLogUseCase = workerLogUseCase
+                insertWorkerLogUseCase = workerLogUseCase
             )
         ).build()
     }

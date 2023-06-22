@@ -11,8 +11,10 @@ import iy.panneerdas.batterylevelnotification.data.repository.workerlog.AppDatab
 import iy.panneerdas.batterylevelnotification.data.repository.workerlog.WorkerLogDao
 import iy.panneerdas.batterylevelnotification.data.repository.workerlog.WorkerLogRepositoryImpl
 import iy.panneerdas.batterylevelnotification.domain.repository.WorkerLogRepository
-import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.GetAllWorkerLogUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.GetAllWorkerLogUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCaseImpl
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -31,7 +33,14 @@ abstract class DatabaseModule {
     }
 
     @Binds
-    abstract fun bindWorkerLogUseCase(useCase: WorkerLogUseCaseImpl): WorkerLogUseCase
+    abstract fun bindInsertWorkerLogUseCase(
+        useCase: InsertWorkerLogUseCaseImpl
+    ): InsertWorkerLogUseCase
+
+    @Binds
+    abstract fun bindGetAllWorkerLogUseCase(
+        useCase: GetAllWorkerLogUseCaseImpl
+    ): GetAllWorkerLogUseCase
 
     @Binds
     abstract fun bindWorkerLogRepository(repo: WorkerLogRepositoryImpl): WorkerLogRepository

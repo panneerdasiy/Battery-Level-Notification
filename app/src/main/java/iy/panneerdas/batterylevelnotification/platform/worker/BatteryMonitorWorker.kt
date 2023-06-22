@@ -7,14 +7,14 @@ import iy.panneerdas.batterylevelnotification.data.model.WorkerLog
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCase
 
 class BatteryMonitorWorker(
     context: Context,
     workerParams: WorkerParameters,
     private val batteryStatusUseCase: BatteryStatusUseCase,
     private val batteryAlertUseCase: BatteryAlertUseCase,
-    private val workerLogUseCase: WorkerLogUseCase
+    private val insertWorkerLogUseCase: InsertWorkerLogUseCase
 ) : CoroutineWorker(
     context,
     workerParams
@@ -34,6 +34,6 @@ class BatteryMonitorWorker(
             timeMillis = System.currentTimeMillis(),
             batteryPercent = batteryStatus?.percent ?: -1f
         )
-        workerLogUseCase.insert(log = log)
+        insertWorkerLogUseCase.insert(log = log)
     }
 }

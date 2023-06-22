@@ -2,18 +2,15 @@ package iy.panneerdas.batterylevelnotification.domain.usecase.worker
 
 import iy.panneerdas.batterylevelnotification.data.model.WorkerLog
 import iy.panneerdas.batterylevelnotification.domain.repository.WorkerLogRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-interface WorkerLogUseCase {
-    fun getAll(): Flow<List<WorkerLog>>
+interface InsertWorkerLogUseCase {
     fun insert(log: WorkerLog)
 }
 
-class WorkerLogUseCaseImpl @Inject constructor(
+class InsertWorkerLogUseCaseImpl @Inject constructor(
     private val repo: WorkerLogRepository
-) : WorkerLogUseCase {
-    override fun getAll(): Flow<List<WorkerLog>> = repo.getAll()
+) : InsertWorkerLogUseCase {
 
     override fun insert(log: WorkerLog) = repo.insert(log = log)
 }

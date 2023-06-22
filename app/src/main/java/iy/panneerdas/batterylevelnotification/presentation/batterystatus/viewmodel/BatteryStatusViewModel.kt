@@ -3,7 +3,7 @@ package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmo
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.worker.WorkerLogUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.worker.GetAllWorkerLogUseCase
 import iy.panneerdas.batterylevelnotification.platform.LifeCycleCoroutineScopeProvider
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +19,7 @@ class BatteryStatusViewModel @Inject constructor(
     private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
     private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,
     batteryChangeStatusUseCase: BatteryChangeStatusUseCase,
-    workerLogUseCase: WorkerLogUseCase,
+    getAllWorkerLogUseCase: GetAllWorkerLogUseCase,
 ) {
     private val viewModelScope = lifecycleCoroutineProvider.coroutineScope()
 
@@ -27,7 +27,7 @@ class BatteryStatusViewModel @Inject constructor(
     val batteryStatus = batteryChangeStatusUseCase()
     val isAlertEnabledFlow = batteryAlertSettingUseCase.getAlertEnableStatus()
 
-    val logsFlow = workerLogUseCase.getAll()
+    val logsFlow = getAllWorkerLogUseCase()
         .map { logs ->
             logs.map { log ->
                 val formatter = SimpleDateFormat("dd/MM/yy hh:mm a", Locale.getDefault())
