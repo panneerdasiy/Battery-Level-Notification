@@ -9,12 +9,12 @@ import iy.panneerdas.batterylevelnotification.data.model.WorkerLog
 
 @Database(
     entities = [WorkerLog::class],
-    version = AppDatabase.VERSION,
+    version = WorkerLogDatabase.VERSION,
     autoMigrations = [
         AutoMigration(from = 1, to = 2)
     ]
 )
-abstract class AppDatabase : RoomDatabase() {
+abstract class WorkerLogDatabase : RoomDatabase() {
 
     abstract fun workerLogDao(): WorkerLogDao
 
@@ -22,15 +22,15 @@ abstract class AppDatabase : RoomDatabase() {
         const val VERSION = 2
 
         @Volatile
-        private lateinit var INSTANCE: AppDatabase
+        private lateinit var INSTANCE: WorkerLogDatabase
         private const val DATABASE_NAME = "app_database"
 
-        fun getInstance(context: Context): AppDatabase {
+        fun getInstance(context: Context): WorkerLogDatabase {
             synchronized(this) {
                 if (::INSTANCE.isInitialized) return INSTANCE
 
                 INSTANCE = Room.databaseBuilder(
-                    context, AppDatabase::class.java, DATABASE_NAME
+                    context, WorkerLogDatabase::class.java, DATABASE_NAME
                 ).build()
                 return INSTANCE
             }

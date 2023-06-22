@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import iy.panneerdas.batterylevelnotification.data.repository.workerlog.AppDatabase
+import iy.panneerdas.batterylevelnotification.data.repository.workerlog.WorkerLogDatabase
 import iy.panneerdas.batterylevelnotification.data.repository.workerlog.WorkerLogDao
 import iy.panneerdas.batterylevelnotification.data.repository.workerlog.WorkerLogRepositoryImpl
 import iy.panneerdas.batterylevelnotification.domain.repository.WorkerLogRepository
@@ -18,17 +18,17 @@ import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorker
 
 @InstallIn(SingletonComponent::class)
 @Module
-abstract class DatabaseModule {
+abstract class WorkerLogDatabaseModule {
 
     companion object {
         @Provides
-        fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-            return AppDatabase.getInstance(context = context)
+        fun provideAppDatabase(@ApplicationContext context: Context): WorkerLogDatabase {
+            return WorkerLogDatabase.getInstance(context = context)
         }
 
         @Provides
-        fun provideWorkerLogDao(appDatabase: AppDatabase): WorkerLogDao {
-            return appDatabase.workerLogDao()
+        fun provideWorkerLogDao(workerLogDatabase: WorkerLogDatabase): WorkerLogDao {
+            return workerLogDatabase.workerLogDao()
         }
     }
 
