@@ -3,13 +3,14 @@ package iy.panneerdas.batterylevelnotification.domain.usecase.battery
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertHandler
+import javax.inject.Inject
 
 interface BatteryAlertUseCase {
 
     operator fun invoke(batteryStatus: BatteryStatus)
 }
 
-class BatteryAlertUseCaseImpl(
+class BatteryAlertUseCaseImpl @Inject constructor(
     private val handler: BatteryAlertHandler
 ) : BatteryAlertUseCase {
 

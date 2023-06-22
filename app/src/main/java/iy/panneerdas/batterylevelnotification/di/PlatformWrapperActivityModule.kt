@@ -14,16 +14,21 @@ import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPerm
 
 @InstallIn(ActivityComponent::class)
 @Module
-class PlatformWrapperModule {
+class PlatformWrapperActivityModule {
+
     @Provides
     fun provideLifeCycleCoroutineScopeProvider(
         @ActivityContext context: Context
     ): LifeCycleCoroutineScopeProvider {
-        return LifeCycleCoroutineScopeProviderImpl(lifecycle = (context as ComponentActivity).lifecycle)
+        return LifeCycleCoroutineScopeProviderImpl(
+            lifecycle = (context as ComponentActivity).lifecycle
+        )
     }
 
     @Provides
-    fun providePermissionManager(@ActivityContext context: Context): NotificationPermissionManager {
+    fun providePermissionManager(
+        @ActivityContext context: Context
+    ): NotificationPermissionManager {
         return NotificationPermissionManagerImpl(activity = context as ComponentActivity)
     }
 }

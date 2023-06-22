@@ -4,11 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
+import dagger.hilt.android.qualifiers.ApplicationContext
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryStatusProvider
+import javax.inject.Inject
 
-class BatteryStatusProviderImpl(private val context: Context) : BatteryStatusProvider {
+class BatteryStatusProviderImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+) : BatteryStatusProvider {
 
     override fun invoke(): BatteryStatus? {
         val batteryIntent = getBatteryIntentOrNull() ?: return null

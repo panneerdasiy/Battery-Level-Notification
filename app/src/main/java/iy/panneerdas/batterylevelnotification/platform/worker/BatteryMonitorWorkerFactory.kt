@@ -7,8 +7,9 @@ import androidx.work.WorkerParameters
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCase
+import javax.inject.Inject
 
-class BatteryMonitorWorkerFactory(
+class BatteryMonitorWorkerFactory @Inject constructor(
     private val batteryStatusUseCase: BatteryStatusUseCase,
     private val batteryAlertUseCase: BatteryAlertUseCase,
     private val insertWorkerLogUseCase: InsertWorkerLogUseCase
