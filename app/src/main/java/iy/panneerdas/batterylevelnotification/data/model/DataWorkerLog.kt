@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "worker_log")
-data class WorkerLog(
+data class DataWorkerLog(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "time_millis") val timeMillis: Long,
     @ColumnInfo(name = "battery_percent", defaultValue = "-1") val batteryPercent: Float = -1f,

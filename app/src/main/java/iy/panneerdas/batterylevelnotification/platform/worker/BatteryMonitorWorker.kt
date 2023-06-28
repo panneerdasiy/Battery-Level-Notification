@@ -3,7 +3,7 @@ package iy.panneerdas.batterylevelnotification.platform.worker
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import iy.panneerdas.batterylevelnotification.data.model.WorkerLog
+import iy.panneerdas.batterylevelnotification.data.model.DataWorkerLog
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCase
@@ -30,7 +30,7 @@ class BatteryMonitorWorker(
     }
 
     private fun recordLog(batteryStatus: BatteryStatus?) {
-        val log = WorkerLog(
+        val log = DataWorkerLog(
             timeMillis = System.currentTimeMillis(),
             batteryPercent = batteryStatus?.percent ?: -1f
         )

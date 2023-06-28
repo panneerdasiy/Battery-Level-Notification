@@ -5,10 +5,10 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import iy.panneerdas.batterylevelnotification.data.model.WorkerLog
+import iy.panneerdas.batterylevelnotification.data.model.DataWorkerLog
 
 @Database(
-    entities = [WorkerLog::class],
+    entities = [DataWorkerLog::class],
     version = WorkerLogDatabase.VERSION,
     autoMigrations = [
         AutoMigration(from = 1, to = 2)
