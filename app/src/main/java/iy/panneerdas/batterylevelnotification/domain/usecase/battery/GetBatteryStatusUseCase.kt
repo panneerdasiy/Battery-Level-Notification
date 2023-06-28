@@ -4,13 +4,13 @@ import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryStatusProvider
 import javax.inject.Inject
 
-interface BatteryStatusUseCase {
+interface GetBatteryStatusUseCase {
     operator fun invoke(): BatteryStatus?
 }
 
-class BatteryStatusUseCaseImpl @Inject constructor(
+class GetBatteryStatusUseCaseImpl @Inject constructor(
     private val batteryStatusProvider: BatteryStatusProvider,
 ) :
-    BatteryStatusUseCase {
+    GetBatteryStatusUseCase {
     override fun invoke(): BatteryStatus? = batteryStatusProvider()
 }

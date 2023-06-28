@@ -5,12 +5,12 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.GetBatteryStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCase
 import javax.inject.Inject
 
 class BatteryMonitorWorkerFactory @Inject constructor(
-    private val batteryStatusUseCase: BatteryStatusUseCase,
+    private val getBatteryStatusUseCase: GetBatteryStatusUseCase,
     private val batteryAlertUseCase: BatteryAlertUseCase,
     private val insertWorkerLogUseCase: InsertWorkerLogUseCase
 ) : WorkerFactory() {
@@ -23,7 +23,7 @@ class BatteryMonitorWorkerFactory @Inject constructor(
             BatteryMonitorWorker::class.java.name -> BatteryMonitorWorker(
                 context = appContext,
                 workerParams = workerParameters,
-                batteryStatusUseCase = batteryStatusUseCase,
+                getBatteryStatusUseCase = getBatteryStatusUseCase,
                 batteryAlertUseCase = batteryAlertUseCase,
                 insertWorkerLogUseCase = insertWorkerLogUseCase,
             )

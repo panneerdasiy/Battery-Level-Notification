@@ -6,13 +6,13 @@ import androidx.work.WorkerParameters
 import iy.panneerdas.batterylevelnotification.data.model.DataWorkerLog
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.GetBatteryStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCase
 
 class BatteryMonitorWorker(
     context: Context,
     workerParams: WorkerParameters,
-    private val batteryStatusUseCase: BatteryStatusUseCase,
+    private val getBatteryStatusUseCase: GetBatteryStatusUseCase,
     private val batteryAlertUseCase: BatteryAlertUseCase,
     private val insertWorkerLogUseCase: InsertWorkerLogUseCase
 ) : CoroutineWorker(
@@ -20,7 +20,7 @@ class BatteryMonitorWorker(
     workerParams
 ) {
     override suspend fun doWork(): Result {
-        val batteryStatus = batteryStatusUseCase()
+        val batteryStatus = getBatteryStatusUseCase()
         recordLog(batteryStatus)
 
         if (batteryStatus == null) return Result.retry()
