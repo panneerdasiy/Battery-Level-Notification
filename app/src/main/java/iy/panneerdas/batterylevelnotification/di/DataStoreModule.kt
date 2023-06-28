@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import iy.panneerdas.batterylevelnotification.data.repository.alertsetting.BatteryAlertSettingDataStore
+import iy.panneerdas.batterylevelnotification.data.repository.alertsetting.BatteryAlertSettingDataStoreImpl
 import iy.panneerdas.batterylevelnotification.data.repository.alertsetting.BatteryAlertSettingRepositoryImpl
 import iy.panneerdas.batterylevelnotification.domain.repository.BatteryAlertSettingRepository
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.GetObservableBatteryAlertSettingUseCase
@@ -14,6 +16,11 @@ import iy.panneerdas.batterylevelnotification.domain.usecase.battery.SetBatteryA
 @InstallIn(SingletonComponent::class)
 @Module
 interface DataStoreModule {
+
+    @Binds
+    fun bindBatteryAlertSettingDataStore(
+        repo: BatteryAlertSettingDataStoreImpl
+    ): BatteryAlertSettingDataStore
 
     @Binds
     fun bindBatteryAlertSettingRepository(
