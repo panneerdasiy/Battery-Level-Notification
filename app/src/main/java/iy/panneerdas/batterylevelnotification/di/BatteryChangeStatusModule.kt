@@ -15,18 +15,23 @@ import iy.panneerdas.batterylevelnotification.platform.battery.BatteryChangeStat
 
 @InstallIn(ActivityComponent::class)
 @Module
-abstract class BatteryChangeStatusModule {
+interface BatteryChangeStatusModule {
     companion object {
         @Provides
-        fun provideBatteryChangeStatusProvider(
+        fun provideComponentActivity(
             @ActivityContext context: Context
-        ): BatteryChangeStatusProvider {
-            return BatteryChangeStatusProviderImpl(context = context as ComponentActivity)
+        ): ComponentActivity {
+            return context as ComponentActivity
         }
     }
 
     @Binds
-    abstract fun bindBatteryChangeStatusUseCase(
+    fun bindBatteryChangeStatusProvider(
+        provider: BatteryChangeStatusProviderImpl
+    ): BatteryChangeStatusProvider
+
+    @Binds
+    fun bindBatteryChangeStatusUseCase(
         useCase: BatteryChangeStatusUseCaseImpl
     ): BatteryChangeStatusUseCase
 }
