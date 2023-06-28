@@ -5,13 +5,13 @@ import iy.panneerdas.batterylevelnotification.domain.platform.BatteryChangeStatu
 import kotlinx.coroutines.flow.SharedFlow
 import javax.inject.Inject
 
-interface BatteryChangeStatusUseCase {
+interface GetObservableBatteryChangeStatusUseCase {
     operator fun invoke(): SharedFlow<BatteryStatus>
 }
 
-class BatteryChangeStatusUseCaseImpl @Inject constructor(
+class GetObservableBatteryChangeStatusUseCaseImpl @Inject constructor(
     private val provider: BatteryChangeStatusProvider
-) : BatteryChangeStatusUseCase {
+) : GetObservableBatteryChangeStatusUseCase {
 
     override fun invoke() = provider.invoke()
 }

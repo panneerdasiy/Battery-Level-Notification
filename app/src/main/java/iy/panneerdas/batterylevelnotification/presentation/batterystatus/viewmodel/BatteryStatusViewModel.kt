@@ -3,7 +3,7 @@ package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmo
 import iy.panneerdas.batterylevelnotification.R
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChangeStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.GetObservableBatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.GetAllWorkerLogUseCase
 import iy.panneerdas.batterylevelnotification.platform.I18nStringProvider
@@ -22,13 +22,13 @@ class BatteryStatusViewModel @Inject constructor(
     private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
     private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,
     lifecycleCoroutineProvider: LifeCycleCoroutineScopeProvider,
-    batteryChangeStatusUseCase: BatteryChangeStatusUseCase,
+    getObservableBatteryChangeStatusUseCase: GetObservableBatteryChangeStatusUseCase,
     getAllWorkerLogUseCase: GetAllWorkerLogUseCase,
 ) {
     private val viewModelScope = lifecycleCoroutineProvider.coroutineScope()
 
     val requestPermissionState = MutableSharedFlow<Unit>()
-    val batteryStatus = batteryChangeStatusUseCase().map {
+    val batteryStatus = getObservableBatteryChangeStatusUseCase().map {
         DisplayBatteryStatus(
             percent = it.percent.toInt(),
             chargingStatus = getDisplayChargingStatus(it.chargingStatus)
