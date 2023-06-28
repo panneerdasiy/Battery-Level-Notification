@@ -9,7 +9,6 @@ import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.W
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
@@ -33,7 +32,7 @@ class BatteryStatusViewModel @Inject constructor(
                 val formatter = SimpleDateFormat("dd/MM/yy hh:mm a", Locale.getDefault())
                 WorkerLog(
                     id = log.id,
-                    dateTime = formatter.format(Date(log.timeMillis)),
+                    dateTime = formatter.format(log.date),
                     batteryPercent = log.batteryPercent
                 )
             }
