@@ -1,4 +1,4 @@
-package iy.panneerdas.batterylevelnotification.data.repository
+package iy.panneerdas.batterylevelnotification.data.repository.alertsetting
 
 import android.content.Context
 import androidx.datastore.core.DataStore

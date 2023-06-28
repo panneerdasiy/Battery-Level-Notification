@@ -2,9 +2,10 @@ package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmo
 
 import iy.panneerdas.batterylevelnotification.R
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.GetObservableBatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.GetObservableBatteryAlertSettingUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.GetObservableBatteryChangeStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.SetBatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.GetAllWorkerLogUseCase
 import iy.panneerdas.batterylevelnotification.platform.I18nStringProvider
 import iy.panneerdas.batterylevelnotification.platform.LifeCycleCoroutineScopeProvider
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class BatteryStatusViewModel @Inject constructor(
     private val i18nStringProvider: I18nStringProvider,
     private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
-    private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,
+    private val setBatteryAlertSettingUseCase: SetBatteryAlertSettingUseCase,
+    getObservableBatteryAlertSettingUseCase: GetObservableBatteryAlertSettingUseCase,
     lifecycleCoroutineProvider: LifeCycleCoroutineScopeProvider,
     getObservableBatteryChangeStatusUseCase: GetObservableBatteryChangeStatusUseCase,
     getAllWorkerLogUseCase: GetAllWorkerLogUseCase,
@@ -43,7 +45,7 @@ class BatteryStatusViewModel @Inject constructor(
         }
     }
 
-    val isAlertEnabledFlow = batteryAlertSettingUseCase.getAlertEnableStatus()
+    val isAlertEnabledFlow = getObservableBatteryAlertSettingUseCase()
 
     val logsFlow = getAllWorkerLogUseCase()
         .map { logs ->
@@ -59,7 +61,7 @@ class BatteryStatusViewModel @Inject constructor(
 
     fun onAlertToggleChange(isChecked: Boolean) {
         viewModelScope.launch {
-            batteryAlertSettingUseCase.setAlertEnableStatus(enable = isChecked)
+            setBatteryAlertSettingUseCase.invoke(enable = isChecked)
 
             if (isChecked) {
                 onAlertToggleEnable()
@@ -88,14 +90,14 @@ class BatteryStatusViewModel @Inject constructor(
     private fun enableAlert() {
         viewModelScope.launch {
             batteryMonitorWorkerUseCase.scheduleWork()
-            batteryAlertSettingUseCase.setAlertEnableStatus(enable = true)
+            setBatteryAlertSettingUseCase.invoke(enable = true)
         }
     }
 
     private fun disableAlert() {
         viewModelScope.launch {
             batteryMonitorWorkerUseCase.cancelWork()
-            batteryAlertSettingUseCase.setAlertEnableStatus(enable = false)
+            setBatteryAlertSettingUseCase.invoke(enable = false)
         }
     }
 }
