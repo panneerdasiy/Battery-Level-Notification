@@ -1,6 +1,6 @@
 package iy.panneerdas.batterylevelnotification.domain.usecase.battery
 
-import iy.panneerdas.batterylevelnotification.domain.repository.BatteryAlertSettingRepository
+import iy.panneerdas.batterylevelnotification.domain.repository.GetObservableBatteryAlertSettingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -9,10 +9,8 @@ interface GetObservableBatteryAlertSettingUseCase {
 }
 
 class GetObservableBatteryAlertSettingUseCaseImpl @Inject constructor(
-    private val settingRepository: BatteryAlertSettingRepository
+    private val settingRepository: GetObservableBatteryAlertSettingRepository
 ) : GetObservableBatteryAlertSettingUseCase {
 
-    override fun invoke(): Flow<Boolean> {
-        return settingRepository.getAlertEnableStatus()
-    }
+    override fun invoke() = settingRepository()
 }

@@ -1,6 +1,6 @@
 package iy.panneerdas.batterylevelnotification.domain.usecase.battery
 
-import iy.panneerdas.batterylevelnotification.domain.repository.BatteryAlertSettingRepository
+import iy.panneerdas.batterylevelnotification.domain.repository.SetBatteryAlertSettingRepository
 import javax.inject.Inject
 
 interface SetBatteryAlertSettingUseCase {
@@ -8,9 +8,8 @@ interface SetBatteryAlertSettingUseCase {
 }
 
 class SetBatteryAlertSettingUseCaseImpl @Inject constructor(
-    private val settingRepository: BatteryAlertSettingRepository
+    private val settingRepository: SetBatteryAlertSettingRepository
 ) : SetBatteryAlertSettingUseCase {
 
-    override suspend fun invoke(enable: Boolean) =
-        settingRepository.setAlertEnableStatus(enable)
+    override suspend fun invoke(enable: Boolean) = settingRepository(enable = enable)
 }
