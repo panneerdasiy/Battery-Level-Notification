@@ -5,7 +5,7 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.GetBatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.battery.status.GetBatteryStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCase
 import javax.inject.Inject
 

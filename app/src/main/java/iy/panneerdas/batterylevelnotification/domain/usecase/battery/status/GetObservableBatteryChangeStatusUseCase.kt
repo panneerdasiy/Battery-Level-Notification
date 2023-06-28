@@ -1,4 +1,4 @@
-package iy.panneerdas.batterylevelnotification.domain.usecase.battery
+package iy.panneerdas.batterylevelnotification.domain.usecase.battery.status
 
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryChangeStatusProvider
