@@ -5,7 +5,7 @@ import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChan
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.GetAllWorkerLogUseCase
 import iy.panneerdas.batterylevelnotification.platform.LifeCycleCoroutineScopeProvider
-import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
+import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayWorkerLog
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ class BatteryStatusViewModel @Inject constructor(
         .map { logs ->
             logs.map { log ->
                 val formatter = SimpleDateFormat("dd/MM/yy hh:mm a", Locale.getDefault())
-                WorkerLog(
+                DisplayWorkerLog(
                     id = log.id,
                     dateTime = formatter.format(log.date),
                     batteryPercent = log.batteryPercent

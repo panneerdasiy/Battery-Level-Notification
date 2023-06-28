@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
 import dagger.hilt.android.AndroidEntryPoint
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.WorkerLog
+import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayWorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme
 import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManager
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
             BatteryStatusScreen(
                 batteryStatus = batteryStatus,
-                workerLogs = workerLogs,
+                displayWorkerLogs = workerLogs,
                 isAlertEnabled = isAlertEnabled
             )
         }
@@ -73,7 +73,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun BatteryStatusScreen(
         batteryStatus: BatteryStatus?,
-        workerLogs: List<WorkerLog>,
+        displayWorkerLogs: List<DisplayWorkerLog>,
         isAlertEnabled: Boolean
     ) {
 
@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
                     }
                     Box(Modifier.height(16.dp))
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(workerLogs) { log ->
+                        items(displayWorkerLogs) { log ->
                             Column {
                                 Text("${log.id}: ${log.dateTime}")
                                 Text("Battery Status: ${log.batteryPercent}")
