@@ -9,8 +9,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ActivityContext
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryChangeStatusProvider
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.status.GetObservableBatteryChangeStatusUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.status.GetObservableBatteryChangeStatusUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.battery.BatteryChangeStatusProviderImpl
 
 @InstallIn(ActivityComponent::class)

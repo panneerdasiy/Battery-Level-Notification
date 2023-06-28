@@ -9,8 +9,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryMonitorWorkHandler
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
 
 @InstallIn(SingletonComponent::class)

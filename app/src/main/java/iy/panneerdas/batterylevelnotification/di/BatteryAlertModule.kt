@@ -5,8 +5,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertHandler
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.notification.BatteryAlertHandlerImpl
 
 @InstallIn(SingletonComponent::class)

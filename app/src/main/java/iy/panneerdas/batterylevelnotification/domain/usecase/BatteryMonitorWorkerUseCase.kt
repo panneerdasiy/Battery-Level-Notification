@@ -1,4 +1,4 @@
-package iy.panneerdas.batterylevelnotification.domain.usecase.battery
+package iy.panneerdas.batterylevelnotification.domain.usecase
 
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryMonitorWorkHandler
 import javax.inject.Inject

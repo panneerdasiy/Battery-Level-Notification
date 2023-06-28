@@ -5,8 +5,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import iy.panneerdas.batterylevelnotification.data.model.DataWorkerLog
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.battery.status.GetBatteryStatusUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetBatteryStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCase
 
 class BatteryMonitorWorker(

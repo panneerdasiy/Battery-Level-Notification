@@ -1,4 +1,4 @@
-package iy.panneerdas.batterylevelnotification.domain.usecase.battery.alertsetting
+package iy.panneerdas.batterylevelnotification.domain.usecase.alertsetting
 
 import iy.panneerdas.batterylevelnotification.domain.repository.GetObservableBatteryAlertSettingRepository
 import kotlinx.coroutines.flow.Flow
