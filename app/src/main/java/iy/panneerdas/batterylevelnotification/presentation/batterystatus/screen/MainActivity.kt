@@ -23,7 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
 import dagger.hilt.android.AndroidEntryPoint
-import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
+import iy.panneerdas.batterylevelnotification.R
+import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayBatteryStatus
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayWorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme
@@ -48,7 +49,10 @@ class MainActivity : ComponentActivity() {
                 initial = emptyList()
             ).value.reversed()
             val batteryStatus = viewModel.batteryStatus.collectAsState(
-                initial = BatteryStatus()
+                initial = DisplayBatteryStatus(
+                    percent = -1,
+                    chargingStatus = getString(R.string.unknown)
+                )
             ).value
             val isAlertEnabled = viewModel.isAlertEnabledFlow.collectAsState(false).value
 
@@ -72,7 +76,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun BatteryStatusScreen(
-        batteryStatus: BatteryStatus?,
+        batteryStatus: DisplayBatteryStatus?,
         displayWorkerLogs: List<DisplayWorkerLog>,
         isAlertEnabled: Boolean
     ) {
@@ -87,7 +91,7 @@ class MainActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("Battery percent: ${batteryStatus?.percent?.toInt()}%")
+                    Text("Battery percent: ${batteryStatus?.percent}%")
                     Text("Charging: ${batteryStatus?.chargingStatus}")
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Smart Charging Remainders")

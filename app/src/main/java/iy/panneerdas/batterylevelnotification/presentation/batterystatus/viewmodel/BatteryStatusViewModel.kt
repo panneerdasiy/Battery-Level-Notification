@@ -1,10 +1,14 @@
 package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel
 
+import iy.panneerdas.batterylevelnotification.R
+import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.battery.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.GetAllWorkerLogUseCase
+import iy.panneerdas.batterylevelnotification.platform.I18nStringProvider
 import iy.panneerdas.batterylevelnotification.platform.LifeCycleCoroutineScopeProvider
+import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayBatteryStatus
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayWorkerLog
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
@@ -14,16 +18,31 @@ import java.util.Locale
 import javax.inject.Inject
 
 class BatteryStatusViewModel @Inject constructor(
-    lifecycleCoroutineProvider: LifeCycleCoroutineScopeProvider,
+    private val i18nStringProvider: I18nStringProvider,
     private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
     private val batteryAlertSettingUseCase: BatteryAlertSettingUseCase,
+    lifecycleCoroutineProvider: LifeCycleCoroutineScopeProvider,
     batteryChangeStatusUseCase: BatteryChangeStatusUseCase,
     getAllWorkerLogUseCase: GetAllWorkerLogUseCase,
 ) {
     private val viewModelScope = lifecycleCoroutineProvider.coroutineScope()
 
     val requestPermissionState = MutableSharedFlow<Unit>()
-    val batteryStatus = batteryChangeStatusUseCase()
+    val batteryStatus = batteryChangeStatusUseCase().map {
+        DisplayBatteryStatus(
+            percent = it.percent.toInt(),
+            chargingStatus = getDisplayChargingStatus(it.chargingStatus)
+        )
+    }
+
+    private fun getDisplayChargingStatus(chargingStatus: BatteryChargingStatus): String {
+        return when (chargingStatus) {
+            BatteryChargingStatus.CHARGING -> i18nStringProvider.getString(R.string.charging)
+            BatteryChargingStatus.NOT_CHARGING -> i18nStringProvider.getString(R.string.not_charging)
+            BatteryChargingStatus.UNKNOWN -> i18nStringProvider.getString(R.string.unknown)
+        }
+    }
+
     val isAlertEnabledFlow = batteryAlertSettingUseCase.getAlertEnableStatus()
 
     val logsFlow = getAllWorkerLogUseCase()

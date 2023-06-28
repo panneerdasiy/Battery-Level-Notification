@@ -5,4 +5,7 @@
     <string name="low_battery_notification">Your battery is low. Please plug in.</string>
     <string name="battery_charging_threshold_reached_notification">Your battery charge has reached the high threshold and please unplug to prolong battery life.</string>
     <string name="battery_status">Battery Status\n</string>
+    <string name="unknown">Unknown</string>
+    <string name="charging">Charging</string>
+    <string name="not_charging">Not Charging</string>
 </resources>
