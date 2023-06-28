@@ -23,5 +23,5 @@ interface PlatformWrapperApplicationModule {
     }
 
     @Binds
-    fun providesI18nStringProvider(providerImpl: I18nStringProviderImpl): I18nStringProvider
+    fun bindI18nStringProvider(providerImpl: I18nStringProviderImpl): I18nStringProvider
 }
