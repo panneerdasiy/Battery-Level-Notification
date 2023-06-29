@@ -2,14 +2,14 @@ package iy.panneerdas.batterylevelnotification.di
 
 import android.content.Context
 import androidx.activity.ComponentActivity
-import dagger.Binds
+import androidx.lifecycle.Lifecycle
 import dagger.Module
 import dagger.Provides
+import dagger.assisted.AssistedFactory
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ActivityContext
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryChangeStatusProvider
-import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.battery.BatteryChangeStatusProviderImpl
 
@@ -24,14 +24,24 @@ interface BatteryChangeStatusModule {
             return context as ComponentActivity
         }
     }
+}
 
-    @Binds
-    fun bindBatteryChangeStatusProvider(
-        provider: BatteryChangeStatusProviderImpl
-    ): BatteryChangeStatusProvider
+@AssistedFactory
+interface BatteryChangeStatusProviderFactory {
+    fun create(lifecycle: Lifecycle): BatteryChangeStatusProviderImpl
+}
 
-    @Binds
-    fun bindBatteryChangeStatusUseCase(
-        useCase: GetObservableBatteryChangeStatusUseCaseImpl
-    ): GetObservableBatteryChangeStatusUseCase
+@AssistedFactory
+abstract class GetObservableBatteryChangeStatusUseCaseFactory {
+    abstract fun create(
+        provider: BatteryChangeStatusProvider
+    ): GetObservableBatteryChangeStatusUseCaseImpl
+
+    fun create(
+        lifecycle: Lifecycle,
+        providerFactory: BatteryChangeStatusProviderFactory
+    ): GetObservableBatteryChangeStatusUseCaseImpl {
+        val provider = providerFactory.create(lifecycle)
+        return create(provider = provider)
+    }
 }

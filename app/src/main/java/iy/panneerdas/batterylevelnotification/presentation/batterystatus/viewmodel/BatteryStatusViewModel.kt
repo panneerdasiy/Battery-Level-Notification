@@ -1,6 +1,9 @@
 package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel
 
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import iy.panneerdas.batterylevelnotification.R
+import iy.panneerdas.batterylevelnotification.di.MonitorService
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertsetting.GetObservableBatteryAlertSettingUseCase
@@ -16,15 +19,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
-import javax.inject.Inject
 
-class BatteryStatusViewModel @Inject constructor(
+class BatteryStatusViewModel @AssistedInject constructor(
     private val i18nStringProvider: I18nStringProvider,
-    private val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
+    @MonitorService val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
     private val setBatteryAlertSettingUseCase: SetBatteryAlertSettingUseCase,
     getObservableBatteryAlertSettingUseCase: GetObservableBatteryAlertSettingUseCase,
     lifecycleCoroutineProvider: LifeCycleCoroutineScopeProvider,
-    getObservableBatteryChangeStatusUseCase: GetObservableBatteryChangeStatusUseCase,
+    @Assisted getObservableBatteryChangeStatusUseCase: GetObservableBatteryChangeStatusUseCase,
     getAllWorkerLogUseCase: GetAllWorkerLogUseCase,
 ) {
     private val viewModelScope = lifecycleCoroutineProvider.coroutineScope()

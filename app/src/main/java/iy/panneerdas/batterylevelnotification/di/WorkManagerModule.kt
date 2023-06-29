@@ -2,35 +2,65 @@ package iy.panneerdas.batterylevelnotification.di
 
 import android.content.Context
 import androidx.work.WorkManager
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryMonitorWorkHandler
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorServiceUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCaseImpl
+import iy.panneerdas.batterylevelnotification.platform.service.BatteryMonitorServiceHandlerImpl
 import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
+import javax.inject.Qualifier
 
 @InstallIn(SingletonComponent::class)
 @Module
-abstract class WorkManagerModule {
+class WorkManagerModule {
 
-    companion object {
-        @Provides
-        fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
-            return WorkManager.getInstance(context)
-        }
+    @Provides
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
+        return WorkManager.getInstance(context)
     }
 
-    @Binds
-    abstract fun bindBatteryMonitorWorkHandler(
+    @MonitorWorker
+    @Provides
+    fun provideBatteryMonitorWorkHandler(
         handler: BatteryMonitorWorkHandlerImpl
-    ): BatteryMonitorWorkHandler
+    ): BatteryMonitorWorkHandler {
+        return handler
+    }
 
-    @Binds
-    abstract fun bindBatteryMonitorWorkerUseCase(
+    @MonitorWorker
+    @Provides
+    fun provideBatteryMonitorWorkerUseCase(
         useCase: BatteryMonitorWorkerUseCaseImpl
-    ): BatteryMonitorWorkerUseCase
+    ): BatteryMonitorWorkerUseCase {
+        return useCase
+    }
+
+    @MonitorService
+    @Provides
+    fun provideBatteryAlertServiceHandler(
+        handler: BatteryMonitorServiceHandlerImpl
+    ): BatteryMonitorWorkHandler {
+        return handler
+    }
+
+    @MonitorService
+    @Provides
+    fun provideBatteryMonitorServiceUseCase(
+        useCase: BatteryMonitorServiceUseCaseImpl
+    ): BatteryMonitorWorkerUseCase {
+        return useCase
+    }
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class MonitorService
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class MonitorWorker

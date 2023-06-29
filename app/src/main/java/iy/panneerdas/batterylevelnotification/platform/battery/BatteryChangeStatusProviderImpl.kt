@@ -5,9 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
-import androidx.activity.ComponentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.qualifiers.ApplicationContext
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryChangeStatusProvider
@@ -16,15 +19,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class BatteryChangeStatusProviderImpl @Inject constructor(
-    private val context: ComponentActivity
+class BatteryChangeStatusProviderImpl @AssistedInject constructor(
+    @ApplicationContext private val context: Context,
+    @Assisted lifecycle: Lifecycle,
 ) : BroadcastReceiver(), BatteryChangeStatusProvider, DefaultLifecycleObserver {
     private val _statusFlow = MutableSharedFlow<BatteryStatus>(replay = 1)
 
     init {
-        context.lifecycle.addObserver(this)
+        lifecycle.addObserver(this)
     }
 
     override fun onStart(owner: LifecycleOwner) = register()
