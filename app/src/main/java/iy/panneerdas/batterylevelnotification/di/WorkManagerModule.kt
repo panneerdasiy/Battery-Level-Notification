@@ -7,12 +7,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import iy.panneerdas.batterylevelnotification.domain.platform.BatteryMonitorWorkHandler
+import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertServiceHandler
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorServiceUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCaseImpl
-import iy.panneerdas.batterylevelnotification.platform.service.BatteryMonitorServiceHandlerImpl
-import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkHandlerImpl
+import iy.panneerdas.batterylevelnotification.platform.service.BatteryAlertServiceHandlerImpl
 import javax.inject.Qualifier
 
 @InstallIn(SingletonComponent::class)
@@ -26,9 +25,9 @@ class WorkManagerModule {
 
     @MonitorWorker
     @Provides
-    fun provideBatteryMonitorWorkHandler(
-        handler: BatteryMonitorWorkHandlerImpl
-    ): BatteryMonitorWorkHandler {
+    fun provideBatteryAlertWorkerServiceHandler(
+        handler: BatteryAlertServiceHandlerImpl
+    ): BatteryAlertServiceHandler {
         return handler
     }
 
@@ -43,8 +42,8 @@ class WorkManagerModule {
     @MonitorService
     @Provides
     fun provideBatteryAlertServiceHandler(
-        handler: BatteryMonitorServiceHandlerImpl
-    ): BatteryMonitorWorkHandler {
+        handler: BatteryAlertServiceHandlerImpl
+    ): BatteryAlertServiceHandler {
         return handler
     }
 

@@ -3,12 +3,12 @@ package iy.panneerdas.batterylevelnotification.platform.service
 import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import iy.panneerdas.batterylevelnotification.domain.platform.BatteryMonitorWorkHandler
+import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertServiceHandler
 import javax.inject.Inject
 
-class BatteryMonitorServiceHandlerImpl @Inject constructor(
+class BatteryAlertServiceHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) : BatteryMonitorWorkHandler {
+) : BatteryAlertServiceHandler {
     private val intent = Intent(context, BatteryMonitorService::class.java)
 
     override fun scheduleWork() {
