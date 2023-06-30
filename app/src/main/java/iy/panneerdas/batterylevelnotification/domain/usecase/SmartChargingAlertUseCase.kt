@@ -5,14 +5,14 @@ import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertHandler
 import javax.inject.Inject
 
-interface BatteryAlertUseCase {
+interface SmartChargingAlertUseCase {
 
     operator fun invoke(batteryStatus: BatteryStatus)
 }
 
-class BatteryAlertUseCaseImpl @Inject constructor(
+class SmartChargingAlertUseCaseImpl @Inject constructor(
     private val handler: BatteryAlertHandler
-) : BatteryAlertUseCase {
+) : SmartChargingAlertUseCase {
 
     override fun invoke(batteryStatus: BatteryStatus) {
         if (shouldStopCharging(batteryStatus)) {

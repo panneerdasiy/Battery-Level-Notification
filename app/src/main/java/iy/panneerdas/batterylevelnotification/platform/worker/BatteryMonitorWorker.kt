@@ -5,7 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import iy.panneerdas.batterylevelnotification.data.model.DataWorkerLog
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargingAlertUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetBatteryStatusUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.InsertWorkerLogUseCase
 
@@ -13,7 +13,7 @@ class BatteryMonitorWorker(
     context: Context,
     workerParams: WorkerParameters,
     private val getBatteryStatusUseCase: GetBatteryStatusUseCase,
-    private val batteryAlertUseCase: BatteryAlertUseCase,
+    private val smartChargingAlertUseCase: SmartChargingAlertUseCase,
     private val insertWorkerLogUseCase: InsertWorkerLogUseCase
 ) : CoroutineWorker(
     context,
@@ -25,7 +25,7 @@ class BatteryMonitorWorker(
 
         if (batteryStatus == null) return Result.retry()
 
-        batteryAlertUseCase(batteryStatus)
+        smartChargingAlertUseCase(batteryStatus)
         return Result.success()
     }
 

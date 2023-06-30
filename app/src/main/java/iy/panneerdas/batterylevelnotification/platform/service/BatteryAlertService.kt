@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import iy.panneerdas.batterylevelnotification.R
 import iy.panneerdas.batterylevelnotification.di.BatteryChangeStatusProviderFactory
 import iy.panneerdas.batterylevelnotification.di.GetObservableBatteryChangeStatusUseCaseFactory
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargingAlertUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -30,7 +30,7 @@ class BatteryAlertService : LifecycleService() {
     lateinit var batteryChangeStatusProviderFactory: BatteryChangeStatusProviderFactory
 
     @Inject
-    lateinit var batteryAlertUseCase: BatteryAlertUseCase
+    lateinit var smartChargingAlertUseCase: SmartChargingAlertUseCase
 
     private lateinit var getObservableBatteryChangeStatusUseCase: GetObservableBatteryChangeStatusUseCase
 
@@ -52,7 +52,7 @@ class BatteryAlertService : LifecycleService() {
         startForeground()
         lifecycle.coroutineScope.launch(Dispatchers.IO) {
             getObservableBatteryChangeStatusUseCase().distinctUntilChanged().collect {
-                batteryAlertUseCase(it)
+                smartChargingAlertUseCase(it)
             }
         }
         return START_STICKY
