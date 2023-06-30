@@ -9,8 +9,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import iy.panneerdas.batterylevelnotification.domain.platform.StartBatteryAlertServiceHandler
 import iy.panneerdas.batterylevelnotification.domain.platform.StopBatteryAlertServiceHandler
-import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StartBatteryAlertServiceUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.HandleBatteryAlertServiceRestartUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.HandleBatteryAlertServiceRestartUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StartBatteryAlertServiceUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StartBatteryAlertServiceUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StartBatteryAlertWorkerServiceUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StopBatteryAlertServiceUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StopBatteryAlertServiceUseCaseImpl
@@ -88,6 +90,13 @@ class BatteryAlertServiceModule {
     fun provideStopBatteryAlertServiceUseCase(
         useCase: StopBatteryAlertServiceUseCaseImpl
     ): StopBatteryAlertServiceUseCase {
+        return useCase
+    }
+
+    @Provides
+    fun provideHandleBatteryAlertServiceRestartUseCase(
+        useCase: HandleBatteryAlertServiceRestartUseCaseImpl
+    ): HandleBatteryAlertServiceRestartUseCase {
         return useCase
     }
 }
