@@ -9,7 +9,7 @@ import javax.inject.Inject
 class BatteryAlertServiceHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : BatteryAlertServiceHandler {
-    private val intent = Intent(context, BatteryMonitorService::class.java)
+    private val intent = Intent(context, BatteryAlertService::class.java)
 
     override fun start() {
         context.startService(intent)

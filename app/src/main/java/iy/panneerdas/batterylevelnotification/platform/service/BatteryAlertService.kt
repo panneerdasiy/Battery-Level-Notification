@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BatteryMonitorService : LifecycleService() {
+class BatteryAlertService : LifecycleService() {
 
     @Inject
     lateinit var getObservableBatteryChangeStatusUseCaseFactory: GetObservableBatteryChangeStatusUseCaseFactory
