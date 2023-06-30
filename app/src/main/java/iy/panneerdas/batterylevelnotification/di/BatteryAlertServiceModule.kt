@@ -16,7 +16,7 @@ import javax.inject.Qualifier
 
 @InstallIn(SingletonComponent::class)
 @Module
-class WorkManagerModule {
+class BatteryAlertServiceModule {
 
     @Provides
     fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
