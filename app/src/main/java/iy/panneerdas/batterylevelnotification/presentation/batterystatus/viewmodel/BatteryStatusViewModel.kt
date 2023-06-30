@@ -15,6 +15,7 @@ import iy.panneerdas.batterylevelnotification.platform.LifeCycleCoroutineScopePr
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayBatteryStatus
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayWorkerLog
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -32,7 +33,7 @@ class BatteryStatusViewModel @AssistedInject constructor(
     private val viewModelScope = lifecycleCoroutineProvider.coroutineScope()
 
     val requestPermissionState = MutableSharedFlow<Unit>()
-    val batteryStatus = getObservableBatteryChangeStatusUseCase().map {
+    val batteryStatus = getObservableBatteryChangeStatusUseCase().distinctUntilChanged().map {
         DisplayBatteryStatus(
             percent = it.percent.toInt(),
             chargingStatus = getDisplayChargingStatus(it.chargingStatus)
