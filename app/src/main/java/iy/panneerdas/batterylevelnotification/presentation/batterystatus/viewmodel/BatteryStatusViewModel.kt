@@ -91,14 +91,14 @@ class BatteryStatusViewModel @AssistedInject constructor(
 
     private fun enableAlert() {
         viewModelScope.launch {
-            batteryAlertServiceUseCase.scheduleWork()
+            batteryAlertServiceUseCase.start()
             setBatteryAlertSettingUseCase.invoke(enable = true)
         }
     }
 
     private fun disableAlert() {
         viewModelScope.launch {
-            batteryAlertServiceUseCase.cancelWork()
+            batteryAlertServiceUseCase.stop()
             setBatteryAlertSettingUseCase.invoke(enable = false)
         }
     }

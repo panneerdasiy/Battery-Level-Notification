@@ -6,26 +6,26 @@ import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertServic
 import javax.inject.Inject
 
 interface BatteryAlertServiceUseCase {
-    fun scheduleWork()
-    fun cancelWork()
+    fun start()
+    fun stop()
 }
 
 class BatteryAlertWorkerServiceUseCaseImpl @Inject constructor(
     @MonitorWorker private val handler: BatteryAlertServiceHandler
 ) : BatteryAlertServiceUseCase {
 
-    override fun scheduleWork() = handler.scheduleWork()
-    override fun cancelWork() = handler.cancelWork()
+    override fun start() = handler.scheduleWork()
+    override fun stop() = handler.cancelWork()
 }
 
 class BatteryAlertServiceUseCaseImpl @Inject constructor(
     @MonitorService private val handler: BatteryAlertServiceHandler
 ) : BatteryAlertServiceUseCase {
-    override fun scheduleWork() {
+    override fun start() {
         handler.scheduleWork()
     }
 
-    override fun cancelWork() {
+    override fun stop() {
         handler.cancelWork()
     }
 }
