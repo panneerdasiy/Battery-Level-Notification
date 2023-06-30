@@ -19,7 +19,7 @@ class BatteryAlertWorkerServiceHandlerImpl @Inject constructor(private val workM
         flexTimeIntervalUnit = TimeUnit.MILLISECONDS,
     ).build()
 
-    override fun scheduleWork() {
+    override fun start() {
         workManager.enqueueUniquePeriodicWork(
             uniqueWorkName,
             ExistingPeriodicWorkPolicy.KEEP,
@@ -27,7 +27,7 @@ class BatteryAlertWorkerServiceHandlerImpl @Inject constructor(private val workM
         )
     }
 
-    override fun cancelWork() {
+    override fun stop() {
         workManager.cancelUniqueWork(uniqueWorkName)
     }
 }

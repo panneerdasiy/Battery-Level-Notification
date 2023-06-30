@@ -1,6 +1,6 @@
 package iy.panneerdas.batterylevelnotification.domain.platform
 
 interface BatteryAlertServiceHandler {
-    fun scheduleWork()
-    fun cancelWork()
+    fun start()
+    fun stop()
 }

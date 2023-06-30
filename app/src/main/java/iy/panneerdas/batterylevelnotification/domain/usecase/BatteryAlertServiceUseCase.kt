@@ -14,18 +14,18 @@ class BatteryAlertWorkerServiceUseCaseImpl @Inject constructor(
     @MonitorWorker private val handler: BatteryAlertServiceHandler
 ) : BatteryAlertServiceUseCase {
 
-    override fun start() = handler.scheduleWork()
-    override fun stop() = handler.cancelWork()
+    override fun start() = handler.start()
+    override fun stop() = handler.stop()
 }
 
 class BatteryAlertServiceUseCaseImpl @Inject constructor(
     @MonitorService private val handler: BatteryAlertServiceHandler
 ) : BatteryAlertServiceUseCase {
     override fun start() {
-        handler.scheduleWork()
+        handler.start()
     }
 
     override fun stop() {
-        handler.cancelWork()
+        handler.stop()
     }
 }

@@ -11,11 +11,11 @@ class BatteryAlertServiceHandlerImpl @Inject constructor(
 ) : BatteryAlertServiceHandler {
     private val intent = Intent(context, BatteryMonitorService::class.java)
 
-    override fun scheduleWork() {
+    override fun start() {
         context.startService(intent)
     }
 
-    override fun cancelWork() {
+    override fun stop() {
         context.stopService(intent)
     }
 
