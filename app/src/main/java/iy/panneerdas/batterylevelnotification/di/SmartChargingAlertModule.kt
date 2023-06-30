@@ -11,7 +11,7 @@ import iy.panneerdas.batterylevelnotification.platform.notification.BatteryAlert
 
 @InstallIn(SingletonComponent::class)
 @Module
-interface BatteryAlertModule {
+interface SmartChargingAlertModule {
 
     @Binds
     fun bindSmartChargingAlertUseCase(useCase: SmartChargingAlertUseCaseImpl): SmartChargingAlertUseCase
