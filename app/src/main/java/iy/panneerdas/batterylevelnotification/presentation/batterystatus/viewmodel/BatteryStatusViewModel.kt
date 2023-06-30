@@ -3,9 +3,11 @@ package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmo
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import iy.panneerdas.batterylevelnotification.R
-import iy.panneerdas.batterylevelnotification.di.MonitorService
+import iy.panneerdas.batterylevelnotification.di.StartMonitorService
+import iy.panneerdas.batterylevelnotification.di.StopMonitorService
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertServiceUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.StartBatteryAlertServiceUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.StopBatteryAlertServiceUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertsetting.GetObservableBatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertsetting.SetBatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
@@ -23,7 +25,8 @@ import java.util.Locale
 
 class BatteryStatusViewModel @AssistedInject constructor(
     private val i18nStringProvider: I18nStringProvider,
-    @MonitorService val batteryAlertServiceUseCase: BatteryAlertServiceUseCase,
+    @StartMonitorService val startBatteryAlertServiceUseCase: StartBatteryAlertServiceUseCase,
+    @StopMonitorService val stopBatteryAlertServiceUseCase: StopBatteryAlertServiceUseCase,
     private val setBatteryAlertSettingUseCase: SetBatteryAlertSettingUseCase,
     getObservableBatteryAlertSettingUseCase: GetObservableBatteryAlertSettingUseCase,
     lifecycleCoroutineProvider: LifeCycleCoroutineScopeProvider,
@@ -92,14 +95,14 @@ class BatteryStatusViewModel @AssistedInject constructor(
 
     private fun enableAlert() {
         viewModelScope.launch {
-            batteryAlertServiceUseCase.start()
+            startBatteryAlertServiceUseCase.start()
             setBatteryAlertSettingUseCase.invoke(enable = true)
         }
     }
 
     private fun disableAlert() {
         viewModelScope.launch {
-            batteryAlertServiceUseCase.stop()
+            stopBatteryAlertServiceUseCase.stop()
             setBatteryAlertSettingUseCase.invoke(enable = false)
         }
     }

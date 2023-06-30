@@ -4,12 +4,13 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertServiceHandler
+import iy.panneerdas.batterylevelnotification.domain.platform.StartBatteryAlertServiceHandler
+import iy.panneerdas.batterylevelnotification.domain.platform.StopBatteryAlertServiceHandler
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class BatteryAlertWorkerServiceHandlerImpl @Inject constructor(private val workManager: WorkManager) :
-    BatteryAlertServiceHandler {
+    StartBatteryAlertServiceHandler, StopBatteryAlertServiceHandler {
 
     private val uniqueWorkName = "BATTERY_MONITOR"
     private val periodicWork = PeriodicWorkRequestBuilder<BatteryMonitorWorker>(
