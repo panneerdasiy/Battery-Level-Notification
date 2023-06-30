@@ -5,7 +5,7 @@ import dagger.assisted.AssistedInject
 import iy.panneerdas.batterylevelnotification.R
 import iy.panneerdas.batterylevelnotification.di.MonitorService
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
-import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryMonitorWorkerUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.BatteryAlertServiceUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertsetting.GetObservableBatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertsetting.SetBatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
@@ -22,7 +22,7 @@ import java.util.Locale
 
 class BatteryStatusViewModel @AssistedInject constructor(
     private val i18nStringProvider: I18nStringProvider,
-    @MonitorService val batteryMonitorWorkerUseCase: BatteryMonitorWorkerUseCase,
+    @MonitorService val batteryAlertServiceUseCase: BatteryAlertServiceUseCase,
     private val setBatteryAlertSettingUseCase: SetBatteryAlertSettingUseCase,
     getObservableBatteryAlertSettingUseCase: GetObservableBatteryAlertSettingUseCase,
     lifecycleCoroutineProvider: LifeCycleCoroutineScopeProvider,
@@ -91,14 +91,14 @@ class BatteryStatusViewModel @AssistedInject constructor(
 
     private fun enableAlert() {
         viewModelScope.launch {
-            batteryMonitorWorkerUseCase.scheduleWork()
+            batteryAlertServiceUseCase.scheduleWork()
             setBatteryAlertSettingUseCase.invoke(enable = true)
         }
     }
 
     private fun disableAlert() {
         viewModelScope.launch {
-            batteryMonitorWorkerUseCase.cancelWork()
+            batteryAlertServiceUseCase.cancelWork()
             setBatteryAlertSettingUseCase.invoke(enable = false)
         }
     }

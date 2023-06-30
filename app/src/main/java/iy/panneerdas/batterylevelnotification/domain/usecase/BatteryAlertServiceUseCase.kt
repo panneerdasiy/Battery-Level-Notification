@@ -5,22 +5,22 @@ import iy.panneerdas.batterylevelnotification.di.MonitorWorker
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertServiceHandler
 import javax.inject.Inject
 
-interface BatteryMonitorWorkerUseCase {
+interface BatteryAlertServiceUseCase {
     fun scheduleWork()
     fun cancelWork()
 }
 
-class BatteryMonitorWorkerUseCaseImpl @Inject constructor(
+class BatteryAlertWorkerServiceUseCaseImpl @Inject constructor(
     @MonitorWorker private val handler: BatteryAlertServiceHandler
-) : BatteryMonitorWorkerUseCase {
+) : BatteryAlertServiceUseCase {
 
     override fun scheduleWork() = handler.scheduleWork()
     override fun cancelWork() = handler.cancelWork()
 }
 
-class BatteryMonitorServiceUseCaseImpl @Inject constructor(
+class BatteryAlertServiceUseCaseImpl @Inject constructor(
     @MonitorService private val handler: BatteryAlertServiceHandler
-) : BatteryMonitorWorkerUseCase {
+) : BatteryAlertServiceUseCase {
     override fun scheduleWork() {
         handler.scheduleWork()
     }
