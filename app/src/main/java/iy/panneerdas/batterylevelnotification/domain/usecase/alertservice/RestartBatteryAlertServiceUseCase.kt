@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-interface HandleBatteryAlertServiceRestartUseCase {
+interface RestartHandleBatteryAlertServiceUseCase {
     operator fun invoke()
 }
 
-class HandleBatteryAlertServiceRestartUseCaseImpl @Inject constructor(
+class RestartHandleBatteryAlertServiceUseCaseImpl @Inject constructor(
     private val getObservableBatteryAlertSettingUseCase: GetObservableBatteryAlertSettingUseCase,
     @StartMonitorService private val startBatteryAlertServiceUseCase: StartBatteryAlertServiceUseCase
-) : HandleBatteryAlertServiceRestartUseCase {
+) : RestartHandleBatteryAlertServiceUseCase {
 
     override fun invoke() {
         CoroutineScope(Dispatchers.IO).launch {
