@@ -12,5 +12,5 @@ class GetBatteryStatusUseCaseImpl @Inject constructor(
     private val batteryStatusProvider: BatteryStatusProvider,
 ) :
     GetBatteryStatusUseCase {
-    override fun invoke(): BatteryStatus? = batteryStatusProvider()
+    override fun invoke(): BatteryStatus? = batteryStatusProvider.getStatus()
 }

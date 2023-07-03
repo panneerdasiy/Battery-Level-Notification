@@ -14,7 +14,7 @@ class BatteryStatusProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : BatteryStatusProvider {
 
-    override fun invoke(): BatteryStatus? {
+    override fun getStatus(): BatteryStatus? {
         val batteryIntent = getBatteryIntentOrNull() ?: return null
 
         val chargingStatus = getChargingStatus(batteryIntent)

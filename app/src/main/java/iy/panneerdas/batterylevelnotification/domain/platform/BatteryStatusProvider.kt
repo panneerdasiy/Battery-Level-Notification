@@ -3,5 +3,5 @@ package iy.panneerdas.batterylevelnotification.domain.platform
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 
 interface BatteryStatusProvider {
-    operator fun invoke(): BatteryStatus?
+    fun getStatus(): BatteryStatus?
 }
