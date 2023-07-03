@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.coroutineScope
@@ -72,12 +73,13 @@ class BatteryAlertService : LifecycleService() {
             .setContentText(getText(R.string.battery_monitor_service))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setTicker(getText(R.string.battery_monitor_service_started))
+            .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
             .build()
     }
 
     private fun createChannelForSDK26Plus(channelId: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManagerCompat.IMPORTANCE_HIGH
+            val importance = NotificationManagerCompat.IMPORTANCE_LOW
             val name = getString(R.string.battery_charging)
             val description = getString(R.string.battery_charging_description)
 

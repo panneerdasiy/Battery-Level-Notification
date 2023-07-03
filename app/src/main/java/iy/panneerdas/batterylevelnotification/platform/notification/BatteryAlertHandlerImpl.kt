@@ -1,9 +1,7 @@
 package iy.panneerdas.batterylevelnotification.platform.notification
 
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.content.Context
-import android.os.Build
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -14,28 +12,40 @@ import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertHandle
 import javax.inject.Inject
 
 class BatteryAlertHandlerImpl @Inject constructor(
-    @ApplicationContext private val context: Context
-) : BatteryAlertHandler {
+    @ApplicationContext private val context: Context,
+    manager: NotificationManagerCompat
+) : NotificationHelperTemplate(manager = manager), BatteryAlertHandler {
     private val channelId = "battery_alert_channel"
     private val notificationId = 1
-    private val manager = NotificationManagerCompat.from(context)
+
+    override fun getChannel(): NotificationChannelCompat {
+        val importance = NotificationManagerCompat.IMPORTANCE_HIGH
+        val name = context.getString(R.string.battery_charging)
+        val description = context.getString(R.string.battery_charging_description)
+
+        return NotificationChannelCompat.Builder(channelId, importance)
+            .setName(name)
+            .setDescription(description)
+            .setVibrationEnabled(true)
+            .build()
+    }
 
     override fun startCharging(status: BatteryStatus) {
-        showNotification(context.getString(R.string.low_battery_notification))
+        val notification = createNotification(context.getString(R.string.low_battery_notification))
+        showNotification(
+            notificationId = notificationId,
+            notification = notification
+        )
     }
 
     override fun stopCharging(status: BatteryStatus) {
-        showNotification(context.getString(R.string.battery_charging_threshold_reached_notification))
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun showNotification(content: String) {
-        if (!manager.areNotificationsEnabled()) return
-
-        createChannelForSDK26Plus()
-
-        val notification = createNotification(content)
-        manager.notify(notificationId, notification)
+        val notification = createNotification(
+            context.getString(R.string.battery_charging_threshold_reached_notification)
+        )
+        showNotification(
+            notificationId = notificationId,
+            notification = notification
+        )
     }
 
     private fun createNotification(content: String): Notification {
@@ -47,21 +57,4 @@ class BatteryAlertHandlerImpl @Inject constructor(
             .setPriority(NotificationManagerCompat.IMPORTANCE_HIGH)
             .build()
     }
-
-    private fun createChannelForSDK26Plus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManagerCompat.IMPORTANCE_HIGH
-            val name = context.getString(R.string.battery_charging)
-            val description = context.getString(R.string.battery_charging_description)
-
-            val channel = NotificationChannelCompat.Builder(channelId, importance)
-                .setName(name)
-                .setDescription(description)
-                .setVibrationEnabled(true)
-                .build()
-
-            manager.createNotificationChannel(channel)
-        }
-    }
-
 }
