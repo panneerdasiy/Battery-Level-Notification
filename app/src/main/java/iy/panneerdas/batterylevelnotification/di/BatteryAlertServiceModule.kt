@@ -29,7 +29,7 @@ class BatteryAlertServiceModule {
         return WorkManager.getInstance(context)
     }
 
-    @StartMonitorWorker
+    @StartAlertWorker
     @Provides
     fun provideStartBatteryAlertWorkerServiceHandler(
         handler: BatteryAlertServiceHandlerImpl
@@ -37,7 +37,7 @@ class BatteryAlertServiceModule {
         return handler
     }
 
-    @StartMonitorWorker
+    @StartAlertWorker
     @Provides
     fun provideStartBatteryAlertWorkerServiceUseCase(
         useCase: StartBatteryAlertWorkerServiceUseCaseImpl
@@ -45,7 +45,7 @@ class BatteryAlertServiceModule {
         return useCase
     }
 
-    @StartMonitorService
+    @StartAlertService
     @Provides
     fun provideStartBatteryAlertServiceHandler(
         handler: BatteryAlertServiceHandlerImpl
@@ -53,7 +53,7 @@ class BatteryAlertServiceModule {
         return handler
     }
 
-    @StartMonitorService
+    @StartAlertService
     @Provides
     fun provideStartBatteryAlertServiceUseCase(
         useCase: StartBatteryAlertServiceUseCaseImpl
@@ -61,7 +61,7 @@ class BatteryAlertServiceModule {
         return useCase
     }
 
-    @StopMonitorWorker
+    @StopAlertWorker
     @Provides
     fun provideStopBatteryAlertWorkerServiceHandler(
         handler: BatteryAlertServiceHandlerImpl
@@ -69,7 +69,7 @@ class BatteryAlertServiceModule {
         return handler
     }
 
-    @StopMonitorWorker
+    @StopAlertWorker
     @Provides
     fun provideStopBatteryAlertWorkerServiceUseCase(
         useCase: StopBatteryAlertWorkerServiceUseCaseImpl
@@ -77,7 +77,7 @@ class BatteryAlertServiceModule {
         return useCase
     }
 
-    @StopMonitorService
+    @StopAlertService
     @Provides
     fun provideStopBatteryAlertServiceHandler(
         handler: BatteryAlertServiceHandlerImpl
@@ -85,7 +85,7 @@ class BatteryAlertServiceModule {
         return handler
     }
 
-    @StopMonitorService
+    @StopAlertService
     @Provides
     fun provideStopBatteryAlertServiceUseCase(
         useCase: StopBatteryAlertServiceUseCaseImpl
@@ -103,16 +103,16 @@ class BatteryAlertServiceModule {
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class StartMonitorService
+annotation class StartAlertService
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class StartMonitorWorker
+annotation class StartAlertWorker
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class StopMonitorService
+annotation class StopAlertService
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class StopMonitorWorker
+annotation class StopAlertWorker

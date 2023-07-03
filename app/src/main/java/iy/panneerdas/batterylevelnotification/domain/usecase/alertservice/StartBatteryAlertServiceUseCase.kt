@@ -1,7 +1,7 @@
 package iy.panneerdas.batterylevelnotification.domain.usecase.alertservice
 
-import iy.panneerdas.batterylevelnotification.di.StartMonitorService
-import iy.panneerdas.batterylevelnotification.di.StartMonitorWorker
+import iy.panneerdas.batterylevelnotification.di.StartAlertService
+import iy.panneerdas.batterylevelnotification.di.StartAlertWorker
 import iy.panneerdas.batterylevelnotification.domain.platform.StartBatteryAlertServiceHandler
 import javax.inject.Inject
 
@@ -10,14 +10,14 @@ interface StartBatteryAlertServiceUseCase {
 }
 
 class StartBatteryAlertWorkerServiceUseCaseImpl @Inject constructor(
-    @StartMonitorWorker private val handler: StartBatteryAlertServiceHandler
+    @StartAlertWorker private val handler: StartBatteryAlertServiceHandler
 ) : StartBatteryAlertServiceUseCase {
 
     override fun start() = handler.start()
 }
 
 class StartBatteryAlertServiceUseCaseImpl @Inject constructor(
-    @StartMonitorService private val handler: StartBatteryAlertServiceHandler
+    @StartAlertService private val handler: StartBatteryAlertServiceHandler
 ) : StartBatteryAlertServiceUseCase {
     override fun start() {
         handler.start()

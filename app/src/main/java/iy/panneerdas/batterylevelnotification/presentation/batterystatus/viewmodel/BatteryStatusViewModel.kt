@@ -3,8 +3,8 @@ package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmo
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import iy.panneerdas.batterylevelnotification.R
-import iy.panneerdas.batterylevelnotification.di.StartMonitorService
-import iy.panneerdas.batterylevelnotification.di.StopMonitorService
+import iy.panneerdas.batterylevelnotification.di.StartAlertService
+import iy.panneerdas.batterylevelnotification.di.StopAlertService
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StartBatteryAlertServiceUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StopBatteryAlertServiceUseCase
@@ -25,8 +25,8 @@ import java.util.Locale
 
 class BatteryStatusViewModel @AssistedInject constructor(
     private val i18nStringProvider: I18nStringProvider,
-    @StartMonitorService val startBatteryAlertServiceUseCase: StartBatteryAlertServiceUseCase,
-    @StopMonitorService val stopBatteryAlertServiceUseCase: StopBatteryAlertServiceUseCase,
+    @StartAlertService val startBatteryAlertServiceUseCase: StartBatteryAlertServiceUseCase,
+    @StopAlertService val stopBatteryAlertServiceUseCase: StopBatteryAlertServiceUseCase,
     private val setBatteryAlertSettingUseCase: SetBatteryAlertSettingUseCase,
     getObservableBatteryAlertSettingUseCase: GetObservableBatteryAlertSettingUseCase,
     lifecycleCoroutineProvider: LifeCycleCoroutineScopeProvider,

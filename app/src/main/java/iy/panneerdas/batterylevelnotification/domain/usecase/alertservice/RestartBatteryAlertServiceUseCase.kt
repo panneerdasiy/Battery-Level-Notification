@@ -1,6 +1,6 @@
 package iy.panneerdas.batterylevelnotification.domain.usecase.alertservice
 
-import iy.panneerdas.batterylevelnotification.di.StartMonitorService
+import iy.panneerdas.batterylevelnotification.di.StartAlertService
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertsetting.GetObservableBatteryAlertSettingUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ interface RestartHandleBatteryAlertServiceUseCase {
 
 class RestartHandleBatteryAlertServiceUseCaseImpl @Inject constructor(
     private val getObservableBatteryAlertSettingUseCase: GetObservableBatteryAlertSettingUseCase,
-    @StartMonitorService private val startBatteryAlertServiceUseCase: StartBatteryAlertServiceUseCase
+    @StartAlertService private val startBatteryAlertServiceUseCase: StartBatteryAlertServiceUseCase
 ) : RestartHandleBatteryAlertServiceUseCase {
 
     override fun invoke() {
