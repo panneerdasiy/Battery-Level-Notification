@@ -2,28 +2,20 @@ package iy.panneerdas.batterylevelnotification.platform.notification
 
 import android.annotation.SuppressLint
 import android.app.Notification
-import android.os.Build
-import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
 import javax.inject.Inject
 
-class NotificationHelper @Inject constructor(
+class NotificationHelper(
     private val manager: NotificationManagerCompat,
-    private val channel: NotificationChannelCompat,
+    private val notificationChannelHelper: NotificationChannelHelper
 ) {
 
     @SuppressLint("MissingPermission")
     fun showNotification(notificationId: Int, notification: Notification) {
         if (!manager.areNotificationsEnabled()) return
 
-        createChannelForSDK26Plus()
+        notificationChannelHelper.createChannelForSDK26Plus()
 
         manager.notify(notificationId, notification)
-    }
-
-    private fun createChannelForSDK26Plus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            manager.createNotificationChannel(channel)
-        }
     }
 }

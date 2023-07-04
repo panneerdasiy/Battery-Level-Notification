@@ -7,14 +7,16 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import iy.panneerdas.batterylevelnotification.R
+import iy.panneerdas.batterylevelnotification.di.SmartChargeNotificationChannel
+import iy.panneerdas.batterylevelnotification.di.SmartChargeNotificationHelper
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertHandler
 import javax.inject.Inject
 
 class BatteryAlertHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val channel: NotificationChannelCompat,
-    private val notificationHelper: NotificationHelper,
+    @SmartChargeNotificationChannel private val channel: NotificationChannelCompat,
+    @SmartChargeNotificationHelper val notificationHelper: NotificationHelper,
 ) : BatteryAlertHandler {
     private val notificationId = 1
 
