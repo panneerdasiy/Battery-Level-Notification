@@ -5,8 +5,9 @@ import android.app.Notification
 import android.os.Build
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
+import javax.inject.Inject
 
-abstract class NotificationHelperTemplate(
+class NotificationHelper @Inject constructor(
     private val manager: NotificationManagerCompat,
     private val channel: NotificationChannelCompat,
 ) {
