@@ -13,22 +13,10 @@ import javax.inject.Inject
 
 class BatteryAlertHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val channel: NotificationChannelCompat,
     manager: NotificationManagerCompat
-) : NotificationHelperTemplate(manager = manager), BatteryAlertHandler {
-    private val channelId = "battery_alert_channel"
+) : NotificationHelperTemplate(manager = manager, channel = channel), BatteryAlertHandler {
     private val notificationId = 1
-
-    override fun getChannel(): NotificationChannelCompat {
-        val importance = NotificationManagerCompat.IMPORTANCE_HIGH
-        val name = context.getString(R.string.battery_charging)
-        val description = context.getString(R.string.battery_charging_description)
-
-        return NotificationChannelCompat.Builder(channelId, importance)
-            .setName(name)
-            .setDescription(description)
-            .setVibrationEnabled(true)
-            .build()
-    }
 
     override fun startCharging(status: BatteryStatus) {
         val notification = createNotification(context.getString(R.string.low_battery_notification))
@@ -50,7 +38,7 @@ class BatteryAlertHandlerImpl @Inject constructor(
 
     private fun createNotification(content: String): Notification {
         val title = context.getString(R.string.battery_status)
-        return NotificationCompat.Builder(context, channelId)
+        return NotificationCompat.Builder(context, channel.id)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(title)
             .setContentText(content)

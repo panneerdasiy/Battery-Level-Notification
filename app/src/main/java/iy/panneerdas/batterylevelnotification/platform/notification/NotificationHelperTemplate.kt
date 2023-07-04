@@ -6,7 +6,10 @@ import android.os.Build
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
 
-abstract class NotificationHelperTemplate(private val manager: NotificationManagerCompat) {
+abstract class NotificationHelperTemplate(
+    private val manager: NotificationManagerCompat,
+    private val channel: NotificationChannelCompat,
+) {
 
     @SuppressLint("MissingPermission")
     fun showNotification(notificationId: Int, notification: Notification) {
@@ -19,11 +22,7 @@ abstract class NotificationHelperTemplate(private val manager: NotificationManag
 
     private fun createChannelForSDK26Plus() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            val channel = getChannel()
             manager.createNotificationChannel(channel)
         }
     }
-
-    abstract fun getChannel(): NotificationChannelCompat
 }
