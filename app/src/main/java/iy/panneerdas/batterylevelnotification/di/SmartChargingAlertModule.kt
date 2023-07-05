@@ -9,13 +9,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import iy.panneerdas.batterylevelnotification.R
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertHandler
 import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargingAlertUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargingAlertUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.notification.BatteryAlertHandlerImpl
 import iy.panneerdas.batterylevelnotification.platform.notification.NotificationChannelHelper
 import iy.panneerdas.batterylevelnotification.platform.notification.NotificationHelper
+import iy.panneerdas.batterylevelnotification.platform.notification.channel.SmartChargeServiceNotificationChannelProvider
+import iy.panneerdas.batterylevelnotification.platform.notification.channel.SmartChargingNotificationChannelProvider
 import javax.inject.Qualifier
 
 @InstallIn(SingletonComponent::class)
@@ -35,16 +36,7 @@ interface SmartChargingAlertModule {
         fun provideSmartChargeNotificationChannel(
             @ApplicationContext context: Context
         ): NotificationChannelCompat {
-            val channelId = "battery_alert_channel"
-            val importance = NotificationManagerCompat.IMPORTANCE_HIGH
-            val name = context.getString(R.string.battery_charging)
-            val description = context.getString(R.string.battery_charging_description)
-
-            return NotificationChannelCompat.Builder(channelId, importance)
-                .setName(name)
-                .setDescription(description)
-                .setVibrationEnabled(true)
-                .build()
+            return SmartChargingNotificationChannelProvider(context).getChannel()
         }
 
         @SmartChargeForegroundNotificationChannel
@@ -52,16 +44,7 @@ interface SmartChargingAlertModule {
         fun provideSmartChargeForegroundNotificationChannel(
             @ApplicationContext context: Context
         ): NotificationChannelCompat {
-            val channelId = "smart_charging_monitor_service"
-            val importance = NotificationManagerCompat.IMPORTANCE_LOW
-            val name = context.getString(R.string.smart_charging_monitor_service)
-            val description = context.getString(R.string.smart_charging_monitor_service_description)
-
-            return NotificationChannelCompat.Builder(channelId, importance)
-                .setName(name)
-                .setDescription(description)
-                .setVibrationEnabled(true)
-                .build()
+            return SmartChargeServiceNotificationChannelProvider(context).getChannel()
         }
 
         @SmartChargeForegroundNotificationChannelHelper
