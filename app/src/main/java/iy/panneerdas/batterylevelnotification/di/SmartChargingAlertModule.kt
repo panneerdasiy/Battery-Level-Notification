@@ -39,19 +39,19 @@ interface SmartChargingAlertModule {
             return SmartChargingNotificationChannelProvider(context).getChannel()
         }
 
-        @SmartChargeForegroundNotificationChannel
+        @SmartChargeServiceNotificationChannel
         @Provides
-        fun provideSmartChargeForegroundNotificationChannel(
+        fun provideSmartChargeServiceNotificationChannel(
             @ApplicationContext context: Context
         ): NotificationChannelCompat {
             return SmartChargeServiceNotificationChannelProvider(context).getChannel()
         }
 
-        @SmartChargeForegroundNotificationChannelHelper
+        @SmartChargeServiceNotificationChannelHelper
         @Provides
-        fun provideSmartChargeForegroundNotificationChannelHelper(
+        fun provideSmartChargeServiceNotificationChannelHelper(
             manager: NotificationManagerCompat,
-            @SmartChargeForegroundNotificationChannel channel: NotificationChannelCompat
+            @SmartChargeServiceNotificationChannel channel: NotificationChannelCompat
         ): NotificationChannelHelper {
             return NotificationChannelHelper(manager = manager, channel = channel)
         }
@@ -65,11 +65,11 @@ interface SmartChargingAlertModule {
             return NotificationChannelHelper(manager = manager, channel = channel)
         }
 
-        @SmartChargeForegroundNotificationHelper
+        @SmartChargeServiceNotificationHelper
         @Provides
-        fun provideSmartChargeForegroundNotificationHelper(
+        fun provideSmartChargeServiceNotificationHelper(
             manager: NotificationManagerCompat,
-            @SmartChargeForegroundNotificationChannelHelper notificationChannelHelper: NotificationChannelHelper
+            @SmartChargeServiceNotificationChannelHelper notificationChannelHelper: NotificationChannelHelper
         ): NotificationHelper {
             return NotificationHelper(
                 manager = manager,
@@ -104,7 +104,7 @@ annotation class SmartChargeNotificationChannel
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
-annotation class SmartChargeForegroundNotificationChannel
+annotation class SmartChargeServiceNotificationChannel
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
@@ -112,7 +112,7 @@ annotation class SmartChargeNotificationChannelHelper
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
-annotation class SmartChargeForegroundNotificationChannelHelper
+annotation class SmartChargeServiceNotificationChannelHelper
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
@@ -120,4 +120,4 @@ annotation class SmartChargeNotificationHelper
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
-annotation class SmartChargeForegroundNotificationHelper
+annotation class SmartChargeServiceNotificationHelper

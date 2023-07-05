@@ -12,8 +12,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import iy.panneerdas.batterylevelnotification.R
 import iy.panneerdas.batterylevelnotification.di.BatteryChangeStatusProviderFactory
 import iy.panneerdas.batterylevelnotification.di.GetObservableBatteryChangeStatusUseCaseFactory
-import iy.panneerdas.batterylevelnotification.di.SmartChargeForegroundNotificationChannel
-import iy.panneerdas.batterylevelnotification.di.SmartChargeForegroundNotificationChannelHelper
+import iy.panneerdas.batterylevelnotification.di.SmartChargeServiceNotificationChannel
+import iy.panneerdas.batterylevelnotification.di.SmartChargeServiceNotificationChannelHelper
 import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargingAlertUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.platform.notification.NotificationChannelHelper
@@ -25,11 +25,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class BatteryAlertService : LifecycleService() {
 
-    @SmartChargeForegroundNotificationChannelHelper
+    @SmartChargeServiceNotificationChannelHelper
     @Inject
     lateinit var notificationChannelHelper: NotificationChannelHelper
 
-    @SmartChargeForegroundNotificationChannel
+    @SmartChargeServiceNotificationChannel
     @Inject
     lateinit var notificationChannel: NotificationChannelCompat
 
