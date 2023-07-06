@@ -34,7 +34,7 @@ class BatteryAlertHandlerImpl @Inject constructor(
         )
         notificationHelper.showNotification(
             notificationId = notificationId,
-            notification = notification
+            notification = incessant(notification)
         )
     }
 
@@ -44,7 +44,12 @@ class BatteryAlertHandlerImpl @Inject constructor(
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(title)
             .setContentText(content)
+            .setAutoCancel(true)
             .setPriority(NotificationManagerCompat.IMPORTANCE_HIGH)
             .build()
+    }
+
+    private fun incessant(notification: Notification): Notification {
+        return notification.also { it.flags = Notification.FLAG_INSISTENT }
     }
 }
