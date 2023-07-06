@@ -4,14 +4,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.AndroidEntryPoint
-import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.RestartHandleBatteryAlertServiceUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StartSmartChargeServiceIfAllowedUseCaseImpl
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class BootCompletedBroadcastReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var restartSmartCharging: RestartHandleBatteryAlertServiceUseCaseImpl
+    lateinit var restartSmartCharging: StartSmartChargeServiceIfAllowedUseCaseImpl
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {

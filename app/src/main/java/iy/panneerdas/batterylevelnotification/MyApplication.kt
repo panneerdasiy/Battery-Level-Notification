@@ -3,7 +3,7 @@ package iy.panneerdas.batterylevelnotification
 import android.app.Application
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
-import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.RestartHandleBatteryAlertServiceUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StartSmartChargeServiceIfAllowedUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.worker.BatteryMonitorWorkerFactory
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ class MyApplication : Application(), Configuration.Provider {
     lateinit var batteryMonitorWorkerFactory: BatteryMonitorWorkerFactory
 
     @Inject
-    lateinit var restartSmartCharging: RestartHandleBatteryAlertServiceUseCaseImpl
+    lateinit var restartSmartCharging: StartSmartChargeServiceIfAllowedUseCaseImpl
 
     override fun onCreate() {
         super.onCreate()
