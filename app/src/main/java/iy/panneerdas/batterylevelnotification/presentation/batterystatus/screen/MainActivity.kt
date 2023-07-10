@@ -26,17 +26,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import iy.panneerdas.batterylevelnotification.R
 import iy.panneerdas.batterylevelnotification.di.BatteryChangeStatusProviderFactory
 import iy.panneerdas.batterylevelnotification.di.BatteryStatusViewModelFactory
+import iy.panneerdas.batterylevelnotification.di.Dispatcher
+import iy.panneerdas.batterylevelnotification.di.DispatcherType
 import iy.panneerdas.batterylevelnotification.di.GetObservableBatteryChangeStatusUseCaseFactory
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayBatteryStatus
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayWorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme
 import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManager
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     @Inject
     lateinit var permissionManager: NotificationPermissionManager
 

@@ -10,8 +10,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryAlertHandler
-import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargingAlertUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargingAlertUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargeStartAlertUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargeStartAlertUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargeStopAlertUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.SmartChargeStopAlertUseCaseImpl
+import iy.panneerdas.batterylevelnotification.domain.usecase.SmartStartAndStopChargeAlertUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.SmartStartAndStopChargeAlertUseCaseImpl
 import iy.panneerdas.batterylevelnotification.platform.notification.BatteryAlertHandlerImpl
 import iy.panneerdas.batterylevelnotification.platform.notification.NotificationChannelHelper
 import iy.panneerdas.batterylevelnotification.platform.notification.NotificationHelper
@@ -91,7 +95,16 @@ interface SmartChargingAlertModule {
     }
 
     @Binds
-    fun bindSmartChargingAlertUseCase(useCase: SmartChargingAlertUseCaseImpl): SmartChargingAlertUseCase
+    fun bindSmartStartAndStopChargeAlertUseCase(useCase: SmartStartAndStopChargeAlertUseCaseImpl)
+            : SmartStartAndStopChargeAlertUseCase
+
+    @Binds
+    fun bindSmartChargeStartAlertUseCase(useCase: SmartChargeStartAlertUseCaseImpl)
+            : SmartChargeStartAlertUseCase
+
+    @Binds
+    fun bindSmartChargeStopAlertUseCase(useCase: SmartChargeStopAlertUseCaseImpl)
+            : SmartChargeStopAlertUseCase
 
     @Binds
     fun bindBatteryAlertHandler(useCase: BatteryAlertHandlerImpl): BatteryAlertHandler
