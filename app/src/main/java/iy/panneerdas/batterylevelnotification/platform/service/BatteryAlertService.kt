@@ -24,7 +24,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class BatteryAlertService : LifecycleService() {
 
-    //    @Inject
+    //    @Inject//TODO inject
 //    @Dispatcher(DispatcherType.IO)
 //    lateinit var dispatcher: CoroutineDispatcher
     private val dispatcher = Dispatchers.IO

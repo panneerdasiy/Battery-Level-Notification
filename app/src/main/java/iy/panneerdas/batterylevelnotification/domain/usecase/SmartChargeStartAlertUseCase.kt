@@ -44,10 +44,10 @@ class SmartChargeStartAlertUseCaseImpl @Inject constructor(
     private suspend fun shouldStartCharging(batteryStatus: BatteryStatus): Boolean {
         return batteryStatus.percent <= 30
                 && batteryStatus.chargingStatus == BatteryChargingStatus.NOT_CHARGING
-                && !isStartChargingAlertDisabled()
+                && isStartChargingAlertEnabled()
     }
 
-    private suspend fun isStartChargingAlertDisabled(): Boolean {
+    private suspend fun isStartChargingAlertEnabled(): Boolean {
         return getStartChargeAlertEnableStatusUseCase()
     }
 
