@@ -1,24 +1,25 @@
 package iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import iy.panneerdas.batterylevelnotification.R
+import iy.panneerdas.batterylevelnotification.common.LifecycleViewModel
+import iy.panneerdas.batterylevelnotification.di.BatteryChangeStatusProviderFactory
 import iy.panneerdas.batterylevelnotification.di.StartAlertService
 import iy.panneerdas.batterylevelnotification.di.StopAlertService
 import iy.panneerdas.batterylevelnotification.domain.model.BatteryChargingStatus
-import iy.panneerdas.batterylevelnotification.domain.model.BatteryStatus
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StartBatteryAlertServiceUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertservice.StopBatteryAlertServiceUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertsetting.GetObservableBatteryAlertSettingUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.alertsetting.SetBatteryAlertSettingUseCase
+import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCaseImpl
 import iy.panneerdas.batterylevelnotification.domain.usecase.worker.GetAllWorkerLogUseCase
 import iy.panneerdas.batterylevelnotification.platform.I18nStringProvider
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayBatteryStatus
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayWorkerLog
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -33,19 +34,27 @@ class BatteryStatusViewModel @Inject constructor(
     private val setBatteryAlertSettingUseCase: SetBatteryAlertSettingUseCase,
     getObservableBatteryAlertSettingUseCase: GetObservableBatteryAlertSettingUseCase,
     getAllWorkerLogUseCase: GetAllWorkerLogUseCase,
-) : ViewModel() {
+    getObservableBatteryChangeStatusUseCaseFactory: GetObservableBatteryChangeStatusUseCaseImpl.GetObservableBatteryChangeStatusUseCaseFactory,
+    batteryChangeStatusProviderFactory: BatteryChangeStatusProviderFactory
+) : LifecycleViewModel() {
+
+    private val getObservableBatteryChangeStatusUseCase =
+        getObservableBatteryChangeStatusUseCaseFactory.create(
+            provider = batteryChangeStatusProviderFactory.create(
+                lifecycle = lifecycle
+            )
+        )
+
     private val _requestPermissionFlow = MutableSharedFlow<Unit>()
     val requestPermissionFlow: SharedFlow<Unit>
         get() = _requestPermissionFlow
 
-    private val _batteryStatus = MutableStateFlow<DisplayBatteryStatus>(
+    val batteryStatus = getObservableBatteryChangeStatusUseCase().distinctUntilChanged().map {
         DisplayBatteryStatus(
-            percent = -1,
-            chargingStatus = i18nStringProvider.getString(R.string.unknown)
+            percent = it.percent.toInt(),
+            chargingStatus = getDisplayChargingStatus(it.chargingStatus)
         )
-    )
-    val batteryStatus: SharedFlow<DisplayBatteryStatus>
-        get() = _batteryStatus
+    }
 
     private fun getDisplayChargingStatus(chargingStatus: BatteryChargingStatus): String {
         return when (chargingStatus) {
@@ -68,17 +77,6 @@ class BatteryStatusViewModel @Inject constructor(
                 )
             }
         }
-
-    fun onBatteryStatusChange(it: BatteryStatus) {
-        viewModelScope.launch {
-            _batteryStatus.emit(
-                DisplayBatteryStatus(
-                    percent = it.percent.toInt(),
-                    chargingStatus = getDisplayChargingStatus(it.chargingStatus)
-                )
-            )
-        }
-    }
 
     fun onAlertToggleChange(isChecked: Boolean) {
         viewModelScope.launch {

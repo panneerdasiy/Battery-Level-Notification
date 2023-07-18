@@ -25,14 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
 import dagger.hilt.android.AndroidEntryPoint
 import iy.panneerdas.batterylevelnotification.R
-import iy.panneerdas.batterylevelnotification.di.ActivityLifeCycleGetObservableBatteryChangeStatusUseCase
-import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayBatteryStatus
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayWorkerLog
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.viewmodel.BatteryStatusViewModel
 import iy.panneerdas.batterylevelnotification.presentation.theme.BatteryLevelNotificationTheme
 import iy.panneerdas.batterylevelnotification.presentation.util.NotificationPermissionManager
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,15 +39,10 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var permissionManager: NotificationPermissionManager
 
-    @ActivityLifeCycleGetObservableBatteryChangeStatusUseCase
-    @Inject
-    lateinit var getObservableBatteryChangeStatusUseCase: GetObservableBatteryChangeStatusUseCase
-
     private val viewModel: BatteryStatusViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initBatteryStatusProvider()
         initPermissionManager()
 
         setContent {
@@ -70,13 +62,6 @@ class MainActivity : ComponentActivity() {
                 displayWorkerLogs = workerLogs,
                 isAlertEnabled = isAlertEnabled
             )
-        }
-    }
-
-    private fun initBatteryStatusProvider() {
-        lifecycle.coroutineScope.launch {
-            getObservableBatteryChangeStatusUseCase().distinctUntilChanged()
-                .collect(viewModel::onBatteryStatusChange)
         }
     }
 
