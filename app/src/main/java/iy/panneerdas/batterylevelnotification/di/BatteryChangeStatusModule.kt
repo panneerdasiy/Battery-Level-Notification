@@ -1,5 +1,6 @@
 package iy.panneerdas.batterylevelnotification.di
 
+import android.app.Activity
 import android.app.Service
 import android.content.Context
 import androidx.activity.ComponentActivity
@@ -9,7 +10,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ServiceComponent
-import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import iy.panneerdas.batterylevelnotification.domain.platform.BatteryChangeStatusProvider
 import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
@@ -20,23 +20,18 @@ import javax.inject.Qualifier
 @InstallIn(ActivityComponent::class, ServiceComponent::class)
 @Module
 interface BatteryChangeStatusModule {
+
     companion object {
-        @Provides
-        fun provideComponentActivity(
-            @ActivityContext context: Context
-        ): ComponentActivity {
-            return context as ComponentActivity
-        }
 
         @ActivityLifeCycleBatteryStatusProvider
         @Provides
         fun provideActivityLifeCycleBatteryChangeStatusProvider(
             @ApplicationContext context: Context,
-            activity: ComponentActivity
+            activity: Activity
         ): BatteryChangeStatusProvider {
             return BatteryChangeStatusProviderImpl(
                 context = context,
-                lifecycle = activity.lifecycle
+                lifecycle = (activity as ComponentActivity).lifecycle
             )
         }
 
