@@ -38,6 +38,10 @@ class BatteryAlertHandlerImpl @Inject constructor(
         )
     }
 
+    override fun dismissStopCharging() {
+        notificationHelper.dismiss(notificationId)
+    }
+
     private fun createNotification(content: String): Notification {
         val title = context.getString(R.string.battery_status)
         return NotificationCompat.Builder(context, channel.id)

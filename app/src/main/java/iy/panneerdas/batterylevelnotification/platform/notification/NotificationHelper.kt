@@ -3,7 +3,6 @@ package iy.panneerdas.batterylevelnotification.platform.notification
 import android.annotation.SuppressLint
 import android.app.Notification
 import androidx.core.app.NotificationManagerCompat
-import javax.inject.Inject
 
 class NotificationHelper(
     private val manager: NotificationManagerCompat,
@@ -17,5 +16,9 @@ class NotificationHelper(
         notificationChannelHelper.createChannelForSDK26Plus()
 
         manager.notify(notificationId, notification)
+    }
+
+    fun dismiss(notificationId: Int) {
+        manager.cancel(notificationId)
     }
 }

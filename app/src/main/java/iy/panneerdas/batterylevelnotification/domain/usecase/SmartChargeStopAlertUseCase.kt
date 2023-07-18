@@ -33,7 +33,8 @@ class SmartChargeStopAlertUseCaseImpl @Inject constructor(
                 return@launch
             }
 
-            if (shouldEnableStopChargeAlert(batteryStatus)) {
+            if (isBatteryNotCharging(batteryStatus)) {
+                handler.dismissStopCharging()
                 enableStopChargingAlert()
                 return@launch
             }
@@ -54,7 +55,7 @@ class SmartChargeStopAlertUseCaseImpl @Inject constructor(
         setStopChargeAlertEnableStatusUseCase(false)
     }
 
-    private fun shouldEnableStopChargeAlert(batteryStatus: BatteryStatus): Boolean {
+    private fun isBatteryNotCharging(batteryStatus: BatteryStatus): Boolean {
         return batteryStatus.chargingStatus == BatteryChargingStatus.NOT_CHARGING
     }
 
