@@ -10,16 +10,12 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.coroutineScope
 import dagger.hilt.android.AndroidEntryPoint
 import iy.panneerdas.batterylevelnotification.R
-import iy.panneerdas.batterylevelnotification.di.BatteryChangeStatusProviderFactory
-import iy.panneerdas.batterylevelnotification.di.Dispatcher
-import iy.panneerdas.batterylevelnotification.di.DispatcherType
-import iy.panneerdas.batterylevelnotification.di.GetObservableBatteryChangeStatusUseCaseFactory
+import iy.panneerdas.batterylevelnotification.di.ServiceLifeCycleGetObservableBatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.di.SmartChargeServiceNotificationChannel
 import iy.panneerdas.batterylevelnotification.di.SmartChargeServiceNotificationChannelHelper
 import iy.panneerdas.batterylevelnotification.domain.usecase.SmartStartAndStopChargeAlertUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.platform.notification.NotificationChannelHelper
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -28,7 +24,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class BatteryAlertService : LifecycleService() {
 
-//    @Inject
+    //    @Inject
 //    @Dispatcher(DispatcherType.IO)
 //    lateinit var dispatcher: CoroutineDispatcher
     private val dispatcher = Dispatchers.IO
@@ -42,23 +38,11 @@ class BatteryAlertService : LifecycleService() {
     lateinit var notificationChannel: NotificationChannelCompat
 
     @Inject
-    lateinit var getObservableBatteryChangeStatusUseCaseFactory: GetObservableBatteryChangeStatusUseCaseFactory
-
-    @Inject
-    lateinit var batteryChangeStatusProviderFactory: BatteryChangeStatusProviderFactory
-
-    @Inject
     lateinit var smartStartAndStopChargeAlertUseCase: SmartStartAndStopChargeAlertUseCase
 
-    private lateinit var getObservableBatteryChangeStatusUseCase: GetObservableBatteryChangeStatusUseCase
-
-    override fun onCreate() {
-        super.onCreate()
-        getObservableBatteryChangeStatusUseCase =
-            getObservableBatteryChangeStatusUseCaseFactory.create(
-                lifecycle = lifecycle, providerFactory = batteryChangeStatusProviderFactory
-            )
-    }
+    @ServiceLifeCycleGetObservableBatteryChangeStatusUseCase
+    @Inject
+    lateinit var getObservableBatteryChangeStatusUseCase: GetObservableBatteryChangeStatusUseCase
 
     override fun onBind(intent: Intent): IBinder? {
         super.onBind(intent)
