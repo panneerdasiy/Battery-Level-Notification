@@ -16,6 +16,7 @@ import iy.panneerdas.batterylevelnotification.platform.LifeCycleCoroutineScopePr
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayBatteryStatus
 import iy.panneerdas.batterylevelnotification.presentation.batterystatus.model.DisplayWorkerLog
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -35,7 +36,10 @@ class BatteryStatusViewModel @Inject constructor(
 ) {
     private val viewModelScope = lifecycleCoroutineProvider.coroutineScope()
 
-    val requestPermissionState = MutableSharedFlow<Unit>()
+    private val _requestPermissionFlow = MutableSharedFlow<Unit>()
+    val requestPermissionFlow: SharedFlow<Unit>
+        get() = _requestPermissionFlow
+
     val batteryStatus = getObservableBatteryChangeStatusUseCase().distinctUntilChanged().map {
         DisplayBatteryStatus(
             percent = it.percent.toInt(),
@@ -80,7 +84,7 @@ class BatteryStatusViewModel @Inject constructor(
 
     private fun onAlertToggleEnable() {
         viewModelScope.launch {
-            requestPermissionState.emit(Unit)
+            _requestPermissionFlow.emit(Unit)
         }
     }
 

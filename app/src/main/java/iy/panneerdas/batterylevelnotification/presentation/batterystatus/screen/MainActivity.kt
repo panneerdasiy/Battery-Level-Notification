@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
 
     private fun initPermissionManager() {
         lifecycle.coroutineScope.launch {
-            viewModel.requestPermissionState.collect {
+            viewModel.requestPermissionFlow.collect {
                 viewModel.onPermissionResult(
                     granted = permissionManager.requestPermission()
                 )
