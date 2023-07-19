@@ -33,7 +33,8 @@ class SmartChargeStartAlertUseCaseImpl @Inject constructor(
                 return@launch
             }
 
-            if (shouldEnableStartChargeAlert(batteryStatus)) {
+            if (areStartChargingConditionsReversed(batteryStatus)) {
+                handler.dismissStopCharging()
                 enableStartChargingAlert()
                 return@launch
             }
@@ -55,8 +56,8 @@ class SmartChargeStartAlertUseCaseImpl @Inject constructor(
         setStartChargeAlertEnableStatusUseCase(false)
     }
 
-    private fun shouldEnableStartChargeAlert(batteryStatus: BatteryStatus): Boolean {
-        return batteryStatus.chargingStatus == BatteryChargingStatus.CHARGING
+    private fun areStartChargingConditionsReversed(batteryStatus: BatteryStatus): Boolean {
+        return batteryStatus.chargingStatus == BatteryChargingStatus.CHARGING || batteryStatus.percent > 30
     }
 
     private suspend fun enableStartChargingAlert() {
