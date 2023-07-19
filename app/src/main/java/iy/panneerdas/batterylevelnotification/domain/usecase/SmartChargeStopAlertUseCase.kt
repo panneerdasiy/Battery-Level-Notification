@@ -56,7 +56,7 @@ class SmartChargeStopAlertUseCaseImpl @Inject constructor(
     }
 
     private fun isBatteryNotCharging(batteryStatus: BatteryStatus): Boolean {
-        return batteryStatus.chargingStatus == BatteryChargingStatus.NOT_CHARGING
+        return batteryStatus.chargingStatus == BatteryChargingStatus.NOT_CHARGING || batteryStatus.percent < 80
     }
 
     private suspend fun enableStopChargingAlert() {
