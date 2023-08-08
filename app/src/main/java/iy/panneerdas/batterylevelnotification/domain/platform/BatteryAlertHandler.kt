@@ -8,5 +8,7 @@ interface BatteryAlertHandler {
 
     fun stopCharging(status: BatteryStatus)
 
+    fun dismissStartCharging()
+
     fun dismissStopCharging()
 }

@@ -34,7 +34,7 @@ class SmartChargeStartAlertUseCaseImpl @Inject constructor(
             }
 
             if (areStartChargingConditionsReversed(batteryStatus)) {
-                handler.dismissStopCharging()
+                handler.dismissStartCharging()
                 enableStartChargingAlert()
                 return@launch
             }

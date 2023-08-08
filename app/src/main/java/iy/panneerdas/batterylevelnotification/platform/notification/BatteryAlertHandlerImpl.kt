@@ -18,12 +18,13 @@ class BatteryAlertHandlerImpl @Inject constructor(
     @SmartChargeNotificationChannel private val channel: NotificationChannelCompat,
     @SmartChargeNotificationHelper val notificationHelper: NotificationHelper,
 ) : BatteryAlertHandler {
-    private val notificationId = 1
+    private val startNotificationId = 1
+    private val stopNotificationId = 2
 
     override fun startCharging(status: BatteryStatus) {
         val notification = createNotification(context.getString(R.string.low_battery_notification))
         notificationHelper.showNotification(
-            notificationId = notificationId,
+            notificationId = startNotificationId,
             notification = notification
         )
     }
@@ -33,13 +34,17 @@ class BatteryAlertHandlerImpl @Inject constructor(
             context.getString(R.string.battery_charging_threshold_reached_notification)
         )
         notificationHelper.showNotification(
-            notificationId = notificationId,
+            notificationId = stopNotificationId,
             notification = incessant(notification)
         )
     }
 
+    override fun dismissStartCharging() {
+        notificationHelper.dismiss(startNotificationId)
+    }
+
     override fun dismissStopCharging() {
-        notificationHelper.dismiss(notificationId)
+        notificationHelper.dismiss(stopNotificationId)
     }
 
     private fun createNotification(content: String): Notification {
