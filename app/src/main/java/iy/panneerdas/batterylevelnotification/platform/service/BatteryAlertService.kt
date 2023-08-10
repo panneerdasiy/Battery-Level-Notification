@@ -16,6 +16,7 @@ import iy.panneerdas.batterylevelnotification.di.SmartChargeServiceNotificationC
 import iy.panneerdas.batterylevelnotification.domain.usecase.SmartStartAndStopChargeAlertUseCase
 import iy.panneerdas.batterylevelnotification.domain.usecase.status.GetObservableBatteryChangeStatusUseCase
 import iy.panneerdas.batterylevelnotification.platform.notification.NotificationChannelHelper
+import iy.panneerdas.batterylevelnotification.platform.notification.NotificationID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -63,7 +64,7 @@ class BatteryAlertService : LifecycleService() {
     private fun startForeground() {
         notificationChannelHelper.createChannelForSDK26Plus()
 
-        val notificationId = 2
+        val notificationId = NotificationID.SMART_CHARGING_FOREGROUND_NOTIFICATION_ID
         val notification = createNotification(notificationChannel.id)
 
         startForeground(notificationId, notification)

@@ -18,8 +18,8 @@ class BatteryAlertHandlerImpl @Inject constructor(
     @SmartChargeNotificationChannel private val channel: NotificationChannelCompat,
     @SmartChargeNotificationHelper val notificationHelper: NotificationHelper,
 ) : BatteryAlertHandler {
-    private val startNotificationId = 1
-    private val stopNotificationId = 2
+    private val startNotificationId = NotificationID.START_CHARGING_NOTIFICATION_ID
+    private val stopNotificationId = NotificationID.STOP_CHARGING_NOTIFICATION_ID
 
     override fun startCharging(status: BatteryStatus) {
         val notification = createNotification(context.getString(R.string.low_battery_notification))
